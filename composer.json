@@ -1,0 +1,14 @@
+{
+    "name": "jaime_000/poker-palooza",
+    "description": "An Interactive dashboard used a small Texas hold-em tournaments to display and store important data",
+    "require": {
+		"cboden/ratchet": "0.3.*",
+        "react/zmq": "\"0.2.*|0.3.*\""
+    },
+    "authors": [
+        {
+            "name": "Jaime Broseman",
+            "email": "kerplunk79@hotmail.com"
+        }
+    ]
+}
