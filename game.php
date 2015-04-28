@@ -15,7 +15,11 @@
 					'game' => $game,
 					'chips' => GetChips(),
 					'blinds' => GetBlinds(),
+<<<<<<< HEAD
 					'players' => GetPlayers($gameID),
+=======
+					'players' => $players,
+>>>>>>> 3a019e2883578371b08ba4b942875a2c22bf4f9f
 					'blindoptions' => GetBlindOptions(),
 					'buyinoptions' => GetBuyInOptions(),
 					'availableplayers' => GetAvailablePlayers($gameID));
