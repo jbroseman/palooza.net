@@ -8,10 +8,14 @@
     });
 
     $('#stop_timer').on('click', function () {
+        var thissound = $("#siren");
+        thissound.get(0).pause();
         stopTimer();
     });
 
     $('#clear_timer').on('click', function () {
+        var thissound = $("#siren");
+        thissound.get(0).pause();
         loadTimer();
     });
 
@@ -19,7 +23,7 @@
         var game = {};
         game['gameid'] = $('.game').data('id');
 
-        setTimer(0, 15);
+        setTimer(0, 5);
 
         //$.ajax({
         //    url: "gettimer.php",
@@ -63,7 +67,7 @@
                     else {
                         stopTimer();
                         var thissound = $("#siren");
-                        thissound.play();
+                        thissound.get(0).play();
                         processEndBlind();
                         return;
                     }

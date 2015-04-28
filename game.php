@@ -5,19 +5,20 @@
   
 		$game = GetActiveGame($connection);
 
-		$players;
+		$gameID;
 		while ($game_data = mysql_fetch_array($game))
 		{
-			$players = GetPlayers($game_data['GameID']);
+			$gameID = $game_data['GameID'];
 		}
 
 		$data = array(
+					'game' => $game,
 					'chips' => GetChips(),
 					'blinds' => GetBlinds(),
-					'players' => $players),
+					'players' => GetPlayers($gameID),
 					'blindoptions' => GetBlindOptions(),
-					'buyinoptions' => GetBuyinOptions(),
-					'availableplayers' => GetAvailablePlayers($game_data['GameID']);
+					'buyinoptions' => GetBuyInOptions(),
+					'availableplayers' => GetAvailablePlayers($gameID));
 
 		function GetActiveGame($connection)
 		{
@@ -26,11 +27,8 @@
 						WHERE Status = 1";
                  
 			$result = mysql_query($game_q, $connection) or die(mysql_error());
-			$row = mysql_fetch_assoc($result);
-               
-			$game = mysql_query($game_q);
       
-			return $game;
+			return $result;
       }
 
       function GetChips()
@@ -51,7 +49,7 @@
     
       function GetBlindOptions()
       {
-		    $blind_dd_q = "SELECT BlindIncrementID, Length, FROM blindincrement WHERE Status > 0";
+		    $blind_dd_q = "SELECT BlindIncrementID, Length FROM blindincrement WHERE Status > 0";
 		    $blind_dd = mysql_query($blind_dd_q);
       
         return $blind_dd;
@@ -59,7 +57,7 @@
     
       function GetBuyInOptions()
       {
-		    $buyins_q = "SELECT BuyinID, Amount, Bounty, ChipUpID, EndOfRebuy FROM buyins WHERE Status > 0 ORDER BY Bounty, Amount";
+		    $buyins_q = "SELECT BuyinID, Amount, Bounty FROM buyins WHERE Status > 0 ORDER BY Bounty, Amount";
 		    $buyins = mysql_query($buyins_q);
       
         return $buyins;

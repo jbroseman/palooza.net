@@ -22,6 +22,10 @@
             </div>
         </div>
         <div id="body">
+			<div class="main-menu">
+				<div class="button" id="New_Game">New Game</div>
+				<div class="button" id="Add_Player">Add Player</div>
+			</div>
 			<div class="players">
 				<ul>
 					<?php
@@ -40,18 +44,18 @@
 					 ?>
 				</ul>
 			</div>
-				<?php
-					while($gamedata = mysql_fetch_assoc($game))
-					{
-						$show_game = "<div class='game' data-id='{$gamedata['GameID']}' data-blind='{$gamedata['BlindIncrementID']}' data-buyin='{$gamedata['BuyInID']}'>";
-						$show_game .= "<div class='timer'>{$gamedata['GameID']}</div>";
-						$show_game .= "</div>";
+			<?php
+				$show_game = "<div class='game' ";
+				while($gamedata = mysql_fetch_assoc($data['game']))
+				{
+					$show_game .= "data-id='{$gamedata['GameID']}' data-blind='{$gamedata['BlindIncrementID']}' data-buyin='{$gamedata['BuyInID']}'";
+				}
+				$show_game .= "></div>";
 
-						echo $show_game;
-					}
-				 ?>
+				echo $show_game;
+				?>
 			<div class="timer">
-				<audio id="siren" src="siren_noise.wav" controls preload="auto" autobuffer></audio>
+				<audio id="siren" src="sounds/siren_noise.wav" controls preload="auto" autobuffer></audio>
 				<table>
 					<tbody>
 						<tr class="display">
@@ -93,8 +97,6 @@
 					?>
 				</div>
             </div>
-            <section class="content-wrapper main-content clear-fix">
-            </section>
         </div>
         <footer>
             <div class="content-wrapper">
@@ -112,58 +114,62 @@
 				<div class="form-field">
 					<label for="BuyinID">Buy-in</label>
 					<Select name="BuyinID">
-						while ($amount = mysql_fetch_array($data['buyinoptions']))
-						{
-							$selected_buyin = null;
-
-							while($gamedata = mysql_fetch_assoc($game))
+						<?php
+							while ($amount = mysql_fetch_array($data['buyinoptions']))
 							{
-								$selected_buyin = $gamedata['BuyInID'];
-							}
+								$selected_buyin = null;
 
-							$show_buyin_options = "<option value='{$amount['BuyinID']}'";
+								while($gamedata = mysql_fetch_assoc($game))
+								{
+									$selected_buyin = $gamedata['BuyInID'];
+								}
 
-							if ($selected_buyin == $amount['BuyinID'])
-							{
-								$show_buyin_options .= " selected = 'selected'";
-							}
+								$show_buyin_options = "<option value='{$amount['BuyinID']}'";
 
-							$show_buyin_options .= ">${$amount['Amount']}";
+								if ($selected_buyin == $amount['BuyinID'])
+								{
+									$show_buyin_options .= " selected = 'selected'";
+								}
 
-							if ($Amount['Bounty'] > 0)
-							{
-								$show_buyin_options .= " + ${$Amount['Bounty']} bounty";
-							}
+								$show_buyin_options .= ">${$amount['Amount']}";
 
-							$show_buyin_options .= "</option>";
+								if ($Amount['Bounty'] > 0)
+								{
+									$show_buyin_options .= " + ${$Amount['Bounty']} bounty";
+								}
+
+								$show_buyin_options .= "</option>";
 							
-							echo $show_buyin_options;
-						}
+								echo $show_buyin_options;
+							}
+						?>
 					</select>
 				</div>
 				<div class="form-field">
 					<label for="BlindIncrementID">Blinds</label>
 					<Select name="BlindIncrementID">
-						while ($increment = mysql_fetch_array($data['blindoptions']))
-						{
-							$selected_blind_increment = null;
-
-							while($gamedata = mysql_fetch_assoc($game))
+						<?php
+							while ($increment = mysql_fetch_array($data['blindoptions']))
 							{
-								$selected_blind_increment = $gamedata['BlindIncrementID'];
-							}
+								$selected_blind_increment = null;
 
-							$show_blind_options = "<option value='{$increment['BlindIncrementID']}'";
+								while($gamedata = mysql_fetch_assoc($game))
+								{
+									$selected_blind_increment = $gamedata['BlindIncrementID'];
+								}
 
-							if ($selected_blind_increment == $increment['BlindIncrementID'])
-							{
-								$show_blind_options .= " selected = 'selected'";
-							}
+								$show_blind_options = "<option value='{$increment['BlindIncrementID']}'";
 
-							$show_buyin_options .= ">{$increment['Length']} minutes</option>";
+								if ($selected_blind_increment == $increment['BlindIncrementID'])
+								{
+									$show_blind_options .= " selected = 'selected'";
+								}
+
+								$show_blind_options .= ">{$increment['Length']} minutes</option>";
 							
-							echo $show_blind_options;
-						}
+								echo $show_blind_options;
+							}
+						?>
 					</select>
 				</div>
 				<div class="form-field">
@@ -171,33 +177,44 @@
 					<input type="text" name="BeginningStack" />
 				</div>
 				<div class="button-wrapper">
-					<input type="submit" />
+					<div class="button" id="Button_Upsert_Game">Submit</div>
 				</div>
 			</form>
 		</div>
 		<div class="popup-add-player hidden">
 			<form action="addplayer.php" method="post">
 				<div class="form-field">
-					<Select>
+					<label for="PlayerID">Players</label>
+					<Select name="PlayerID" id="PlayerID">
 						<option value='0'></option>
-						while ($player = mysql_fetch_array($data['availableplayers']))
-						{
-							$show_player = "<option value='{$player['PlayerID']}'>{$player['FirstName']} {$player['LastName']}</option>";
+						<?php
+							while ($player = mysql_fetch_array($data['availableplayers']))
+							{
+								$show_player = "<option value='{$player['PlayerID']}'>{$player['FirstName']} {$player['LastName']}</option>";
 							
-							echo $show_player;
-						}
+								echo $show_player;
+							}
+						?>
 					</select>
+				</div>
+				<div class="form-field">
 					<label for="Firstname">First Name</label>
 					<input id="FirstName" name="FirstName" type="text" value="" />
+				</div>
+				<div class="form-field">
 					<label for="LastName">Last Name</label>
 					<input id="LastName" name="LastName" type="text" value="" />
+				</div>
+				<div class="form-field">
 					<label for="Phone">Phone</label>
 					<input id="Phone" name="Phone" type="text" value="" />
+				</div>
+				<div class="form-field">
 					<label for="Email">Email</label>
 					<input id="Email" name="Email" type="text" value="" />
 				</div>
 				<div class="button-wrapper">
-					<input type="submit" value="Send" />
+					<div class="button" id="Button_Upsert_Player">Submit</div>
 				</div>
 			</form>
 		</div>
