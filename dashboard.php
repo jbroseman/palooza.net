@@ -45,13 +45,10 @@
 				</ul>
 			</div>
 			<?php
-				$show_game = "<div class='game' ";
-				while($gamedata = mysql_fetch_assoc($data['game']))
-				{
-					$show_game .= "data-id='{$gamedata['GameID']}' data-blind='{$gamedata['BlindIncrementID']}' data-buyin='{$gamedata['BuyInID']}'";
-				}
-				$show_game .= "></div>";
-
+				$gamedata = $data['game'];
+				
+				$show_game = "<div class='game' data-id='{$gamedata['GameID']}' data-blind='{$gamedata['BlindIncrementID']}' data-buyin='{$gamedata['BuyInID']}'></div>";
+				
 				echo $show_game;
 				?>
 			<div class="timer">
@@ -177,11 +174,7 @@
 					<input type="text" name="BeginningStack" />
 				</div>
 				<div class="button-wrapper">
-<<<<<<< HEAD
-					<div class="button" id="Button_Upsert_Game">Submit</div>
-=======
 					<div id="Button_Upsert_Game" class="button">Submit</div>
->>>>>>> 3a019e2883578371b08ba4b942875a2c22bf4f9f
 				</div>
 			</form>
 		</div>
@@ -218,11 +211,7 @@
 					<input id="Email" name="Email" type="text" value="" />
 				</div>
 				<div class="button-wrapper">
-<<<<<<< HEAD
-					<div class="button" id="Button_Upsert_Player">Submit</div>
-=======
 					<div id="Button_Upsert_Player" class="button">Submit</div>
->>>>>>> 3a019e2883578371b08ba4b942875a2c22bf4f9f
 				</div>
 			</form>
 		</div>

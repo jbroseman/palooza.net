@@ -6,18 +6,20 @@
 		$game = GetActiveGame($connection);
 
 		$players;
-		while ($game_data = mysql_fetch_array($game))
+		while ($game_data = mysql_fetch_assoc($game))
 		{
 			$players = GetPlayers($game_data['GameID']);
-		}
+			$availablePlayers = GetAvailablePlayers($game_data['GameID']);
 
-		$data = array(
-					'chips' => GetChips(),
-					'blinds' => GetBlinds(),
-					'players' => $players,
-					'blindoptions' => GetBlindOptions(),
-					'buyinoptions' => GetBuyinOptions(),
-					'availableplayers' => GetAvailablePlayers($game_data['GameID']);
+			$data = array(
+						'game' => $game_data,
+						'chips' => GetChips(),
+						'blinds' => GetBlinds(),
+						'players' => $players,
+						'blindoptions' => GetBlindOptions(),
+						'buyinoptions' => GetBuyinOptions(),
+						'availableplayers' => $availablePlayers);
+		}
 
 		function GetActiveGame($connection)
 		{
@@ -27,11 +29,8 @@
 						LIMIT 1";
                  
 			$result = mysql_query($game_q, $connection) or die(mysql_error());
-			$row = mysql_fetch_assoc($result);
-               
-			$game = mysql_query($game_q);
       
-			return $game;
+			return $result;
       }
 
       function GetChips()
@@ -52,15 +51,15 @@
     
       function GetBlindOptions()
       {
-		    $blind_dd_q = "SELECT BlindIncrementID, Length, FROM blindincrement WHERE Status > 0";
+		    $blind_dd_q = "SELECT BlindIncrementID, Length FROM blindincrement WHERE Status > 0";
 		    $blind_dd = mysql_query($blind_dd_q);
       
-        return $blind_dd;
+			return $blind_dd;
       }
     
       function GetBuyInOptions()
       {
-		    $buyins_q = "SELECT BuyinID, Amount, Bounty, ChipUpID, EndOfRebuy FROM buyins WHERE Status > 0 ORDER BY Bounty, Amount";
+		    $buyins_q = "SELECT BuyinID, Amount, Bounty FROM buyins WHERE Status > 0 ORDER BY Bounty, Amount";
 		    $buyins = mysql_query($buyins_q);
       
         return $buyins;
@@ -73,7 +72,7 @@
                                 (SELECT COUNT(*) FROM GamePlayerBuyin gbp WHERE gbp.GamePlayerID = gp.GamePlayerID) AS BuyinCount
                       FROM      players AS p 
                       JOIN      gameplayers AS gp ON gp.PlayerID = p.PlayerID
-                      WHERE     gp.GameID = $gameID";
+                      WHERE     gp.GameID = " . $gameID;
                   
 		    $players = mysql_query($players_q);
       
@@ -82,12 +81,11 @@
     
       function GetAvailablePlayers($gameID)
       {
-		    $players_q = "SELECT gp.PlayerID, 
+		    $players_q = "SELECT PlayerID, 
                                 FirstName,
 								LastName
-                      FROM      players AS p 
-                      JOIN      gameplayers AS gp ON gp.PlayerID = p.PlayerID
-                      WHERE     gp.GameID != $gameID";
+                      FROM      players
+                      WHERE     PlayerID NOT IN (SELECT PlayerID FROM gameplayers WHERE GameID = " . $gameID . ")";
                   
 		    $players = mysql_query($players_q);
       

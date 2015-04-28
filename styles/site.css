@@ -149,6 +149,10 @@ ul, li {
     text-align: center;
 }
 
+.timer audio {
+    display: none;
+}
+
 .timer table {
     display: block;
     width: 100%;
