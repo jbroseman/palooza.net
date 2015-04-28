@@ -14,7 +14,7 @@
 		$data = array(
 					'chips' => GetChips(),
 					'blinds' => GetBlinds(),
-					'players' => $players),
+					'players' => $players,
 					'blindoptions' => GetBlindOptions(),
 					'buyinoptions' => GetBuyinOptions(),
 					'availableplayers' => GetAvailablePlayers($game_data['GameID']);

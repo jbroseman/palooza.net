@@ -8,8 +8,12 @@
     });
 
     function upsertGame() {
+        var $form = $("#Upsert_Game");
+        var data = JSON.stringify($form.serializeArray());
+
         $.ajax({
             url: "upsertgame.php",
+            data: data,
             dataType: 'json',
             success: function (data) {
                 if (data)
@@ -27,8 +31,12 @@
     }
 
     function upsertGamePlayer() {
+        var $form = $("#Upsert_Player");
+        var data = JSON.stringify($form.serializeArray());
+
         $.ajax({
             url: "upsertgameplayer.php",
+            data: data,
             dataType: 'json',
             success: function (data) {
                 if (data) {

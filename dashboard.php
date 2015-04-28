@@ -104,7 +104,7 @@
             </div>
         </footer>
 		<div class="popup-new-game hidden">
-			<form action="upsertgame.php" method="post">
+			<form id="Upsert_Game" action="upsertgame.php" method="post">
 				<div class="form-field">
 					<label for="Date">Date</label>
 					<input type="text" name="Date" />
@@ -171,12 +171,12 @@
 					<input type="text" name="BeginningStack" />
 				</div>
 				<div class="button-wrapper">
-					<input type="submit" />
+					<div id="Button_Upsert_Game" class="button">Submit</div>
 				</div>
 			</form>
 		</div>
 		<div class="popup-add-player hidden">
-			<form action="addplayer.php" method="post">
+			<form id="Upsert_Player" action="addplayer.php" method="post">
 				<div class="form-field">
 					<Select>
 						<option value='0'></option>
@@ -197,7 +197,7 @@
 					<input id="Email" name="Email" type="text" value="" />
 				</div>
 				<div class="button-wrapper">
-					<input type="submit" value="Send" />
+					<div id="Button_Upsert_Player" class="button">Submit</div>
 				</div>
 			</form>
 		</div>
