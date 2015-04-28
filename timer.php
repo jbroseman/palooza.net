@@ -24,7 +24,7 @@
 			$row = "INSERT INTO timervalues (GameID, Minutes, Seconds)
 			VALUES ($game_id, $min, $seconds)";
 
-			if (mysqli_query($connection, $row)) {
+			if (mysql_query($row, $connection)) {
 				$result = array(
 					"success" => 'true',
 					"message" => '',
@@ -32,15 +32,9 @@
 			} else {
 				$result = array(
 					"success" => 'false',
-					"message" => mysqli_error($conn),
+					"message" => mysql_error($conn),
 				);
 			}
-
-			$context = new ZMQContext();
-			$socket = $context->getSocket(ZMQ::SOCKET_PUSH, 'SUCCESS!!');
-			$socket->connect("tcp://localhost:5555");
-
-			$socket->send(json_encode($result));
 		}
     ?>
   </body>

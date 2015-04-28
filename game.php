@@ -14,7 +14,10 @@
 		$data = array(
 					'chips' => GetChips(),
 					'blinds' => GetBlinds(),
-					'players' => $players);
+					'players' => $players),
+					'blindoptions' => GetBlindOptions(),
+					'buyinoptions' => GetBuyinOptions(),
+					'availableplayers' => GetAvailablePlayers($game_data['GameID']);
 
 		function GetActiveGame($connection)
 		{
@@ -46,6 +49,22 @@
         return $blinds;
       }
     
+      function GetBlindOptions()
+      {
+		    $blind_dd_q = "SELECT BlindIncrementID, Length, FROM blindincrement WHERE Status > 0";
+		    $blind_dd = mysql_query($blind_dd_q);
+      
+        return $blind_dd;
+      }
+    
+      function GetBuyInOptions()
+      {
+		    $buyins_q = "SELECT BuyinID, Amount, Bounty, ChipUpID, EndOfRebuy FROM buyins WHERE Status > 0 ORDER BY Bounty, Amount";
+		    $buyins = mysql_query($buyins_q);
+      
+        return $buyins;
+      }
+    
       function GetPlayers($gameID)
       {
 		    $players_q = "SELECT gp.PlayerID, 
@@ -59,6 +78,20 @@
       
         return $players;
       }
+    
+      function GetAvailablePlayers($gameID)
+      {
+		    $players_q = "SELECT gp.PlayerID, 
+                                FirstName,
+								LastName
+                      FROM      players AS p 
+                      JOIN      gameplayers AS gp ON gp.PlayerID = p.PlayerID
+                      WHERE     gp.GameID != $gameID";
+                  
+		    $players = mysql_query($players_q);
+      
+        return $players;
+      }
   
       function UpsertGame($game)
       {
@@ -66,11 +99,6 @@
         {
       
         }
-      }
-  
-      function GetEditGame($gameID)
-      {
-    
       }
     ?>
   </body>

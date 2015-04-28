@@ -267,6 +267,20 @@ ul, li {
     width: 20pt;
 }
 
+/* Popups
+----------------------------------------------------------*/
+.popup-new-game,
+.popup-add-player {
+    z-index: 5;
+    background-color: #630000;
+    color: white;
+    position: absolute;
+    width: 60%;
+    left: 20%;
+    top: 20%;
+    box-shadow: 0px 0px 50px 50px black;
+}
+
 /* footer
 ----------------------------------------------------------*/
 
