@@ -45,8 +45,6 @@
 				</ul>
 			</div>
 			<?php
-				$gamedata = $data['game'];
-				
 				$show_game = "<div class='game' data-id='{$gamedata['GameID']}' data-blind='{$gamedata['BlindIncrementID']}' data-buyin='{$gamedata['BuyInID']}'></div>";
 				
 				echo $show_game;
@@ -106,7 +104,7 @@
 			<form id="Upsert_Game" action="upsertgame.php" method="post">
 				<div class="form-field">
 					<label for="Date">Date</label>
-					<input type="text" name="Date" />
+					<input type="date" name="Date" />
 				</div>
 				<div class="form-field">
 					<label for="BuyinID">Buy-in</label>
@@ -114,12 +112,7 @@
 						<?php
 							while ($amount = mysql_fetch_array($data['buyinoptions']))
 							{
-								$selected_buyin = null;
-
-								while($gamedata = mysql_fetch_assoc($game))
-								{
-									$selected_buyin = $gamedata['BuyInID'];
-								}
+								$selected_buyin = $gamedata['BuyInID'];
 
 								$show_buyin_options = "<option value='{$amount['BuyinID']}'";
 
@@ -128,11 +121,11 @@
 									$show_buyin_options .= " selected = 'selected'";
 								}
 
-								$show_buyin_options .= ">${$amount['Amount']}";
+								$show_buyin_options .= ">\${$amount['Amount']}";
 
 								if ($Amount['Bounty'] > 0)
 								{
-									$show_buyin_options .= " + ${$Amount['Bounty']} bounty";
+									$show_buyin_options .= " + \${$Amount['Bounty']} bounty";
 								}
 
 								$show_buyin_options .= "</option>";

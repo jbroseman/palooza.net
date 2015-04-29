@@ -7,18 +7,26 @@
         $('.popup-add-player').removeClass('hidden');
     });
 
+    $('#Button_Upsert_Game').on('click', function () {
+        upsertGame();
+    })
+
+    $('#Button_Upsert_Player').on('click', function () {
+        upsertGamePlayer();
+    })
+
     function upsertGame() {
         var $form = $("#Upsert_Game");
-        var data = JSON.stringify($form.serializeArray());
+        var data = { "data": $form.serializeArray() };
 
         $.ajax({
             url: "upsertgame.php",
+            type: "post",
             data: data,
-            dataType: 'json',
             success: function (data) {
                 if (data)
                 {
-                    if (data.message.length) {
+                    if (data.message) {
                         $('#result_message').html(data.message);
                     }
                     else {

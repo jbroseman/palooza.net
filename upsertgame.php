@@ -1,30 +1,23 @@
-﻿<html>
-  <body>
-    <?php
-		include 'connection.php';
-		include 'game.php';
+﻿<?php
+	include 'connection.php';
+	include 'game.php';
 
-		$date = $_POST['Date'];
-		$buyin = $_POST['BuyinID'];
-		$blind = $_POST['BlindIncrementID'];
-		$stack = $_POST['BeginningStack'];
+	$data = json_decode($_POST['data'], TRUE);
 
-		$sql = "INSERT INTO games (Date, BlindIncrementID, BuyInID, BeginningStack)
-				VALUES ('$date', '$blind', '$buyin', '$stack')";
+	$sql = "INSERT INTO games (Date, BlindIncrementID, BuyInID, BeginningStack)
+			VALUES (" . $data['Date'] . ", " . $data['BlindIncrementID'] . ", " . $data['BuyInID'] . ", " . $data['BeginningStack'] . ")";
 		
-		if (mysql_query($sql, $connection)) {
-			$result = array(
-				"success" => 'true',
-				"message" => '',
-			);
-		} else {
-			$result = array(
-				"success" => 'false',
-				"message" => mysql_error($conn),
-			);
-		}
+	if (mysql_query($sql, $connection)) {
+		$result = array(
+			"success" => 'true',
+			"message" => '',
+		);
+	} else {
+		$result = array(
+			"success" => 'false',
+			"message" => mysql_error($connection),
+		);
+	}
 
-		print json_encode($result);
-    ?>
-  </body>
-</html>
+	print json_encode($result);
+	?>

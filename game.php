@@ -10,16 +10,16 @@
 		{
 			$players = GetPlayers($game_data['GameID']);
 			$availablePlayers = GetAvailablePlayers($game_data['GameID']);
-
-			$data = array(
-						'game' => $game_data,
-						'chips' => GetChips(),
-						'blinds' => GetBlinds(),
-						'players' => $players,
-						'blindoptions' => GetBlindOptions(),
-						'buyinoptions' => GetBuyinOptions(),
-						'availableplayers' => $availablePlayers);
+			$gamedata = $game_data;
 		}
+
+		$data = array(
+					'chips' => GetChips(),
+					'blinds' => GetBlinds(),
+					'players' => $players,
+					'blindoptions' => GetBlindOptions(),
+					'buyinoptions' => GetBuyInOptions(),
+					'availableplayers' => $availablePlayers);
 
 		function GetActiveGame($connection)
 		{
@@ -59,10 +59,10 @@
     
       function GetBuyInOptions()
       {
-		    $buyins_q = "SELECT BuyinID, Amount, Bounty FROM buyins WHERE Status > 0 ORDER BY Bounty, Amount";
+		    $buyins_q = "SELECT BuyinID, Amount, Bounty FROM buyins WHERE Status > 0";
 		    $buyins = mysql_query($buyins_q);
       
-        return $buyins;
+			return $buyins;
       }
     
       function GetPlayers($gameID)
