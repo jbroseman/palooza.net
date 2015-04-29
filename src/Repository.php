@@ -72,6 +72,33 @@ class Repository
 		return $statement->fetchAll(PDO::FETCH_ASSOC);		
 	}
 
+	public function GetBlindOptions()
+	{
+	    $sql = '
+	        SELECT  BlindIncrementID, 
+	                Length 
+	        FROM    blindincrement 
+	        WHERE   Status > 0
+	    ';
+
+	    $statement = $this->database->query($sql);
+		return $statement->fetchAll(PDO::FETCH_ASSOC);	
+	}
+
+	public function GetBuyInOptions()
+	{
+	    $$sql = '
+	        SELECT  BuyinID, 
+	                Amount, 
+	                Bounty 
+	        FROM    buyins 
+	        WHERE   Status > 0
+	    ';
+
+	    $statement = $this->database->query($sql);
+		return $statement->fetchAll(PDO::FETCH_ASSOC);	
+	}
+
 	public function GetPlayers($gameID)
 	{
 		$sql = '
@@ -87,7 +114,103 @@ class Repository
 		$statement->bindValue(':gameID', $gameID);
 		$statement->execute();
 		return $statement->fetchAll(PDO::FETCH_ASSOC);
-	}	
+	}
+    
+	function GetAvailablePlayers($gameID)
+	{
+	    $sql = '
+	        SELECT  PlayerID, 
+	                FirstName,
+	                LastName
+	        FROM    players
+	        WHERE   PlayerID NOT IN (SELECT PlayerID FROM gameplayers WHERE GameID = :gameID
+	    ';
+	          
+	    $statement = $this->database->prepare($sql);
+		$statement->bindValue(':gameID', $gameID);
+		$statement->execute();
+		return $statement->fetchAll(PDO::FETCH_ASSOC);
+	}
+
+	function UpsertGame($game)
+	{
+	    $sql;
+	    if (empty($game['GameID']))
+	    {
+	        $sql = '
+	            INSERT INTO games 
+	                (Date, 
+	                BlindIncrementID, 
+	                BuyInID, 
+	                BeginningStack)
+	            VALUES 
+	                (:date,
+	                :blind,
+	                :buyin,
+	                :stack)
+	            ';
+		}
+	    else
+	    {
+	        //Update where id blah blah..
+	    }
+
+	    $statement = $this->database->prepare($sql);
+		$statement->bindValue(':date', $game['Date']);
+		$statement->bindValue(':blind', $game['BlindIncrementID']);
+		$statement->bindValue(':buyin', $game['BuyInID']);
+		$statement->bindValue(':stack', $game['BeginningStack']);
+
+		return array(
+            "success" => $statement->execute(),
+            "message" => $statement->errorCode()
+	    );
+	}
+
+	function GetCurrentTime($game_id)
+	{
+		$sql = '
+			SELECT TOP 1 
+					Minutes, 
+					Seconds
+			FROM 	timervalues
+			WHERE 	GameID = :gameID
+			AND 	Status = 1
+			ORDER BY TimerValueID DESC
+			LIMIT 	1
+		';
+	          
+	    $statement = $this->database->prepare($sql);
+		$statement->bindValue(':gameID', $game_id);
+		$statement->execute();
+		return $statement->fetch(PDO::FETCH_ASSOC);
+	}
+
+	function UpsertCurrentTime($game_id, $min, $sec)
+	{
+		$sql = '
+			INSERT INTO timervalues (
+				GameID, 
+				Minutes, 
+				Seconds)
+			VALUES (
+				:gameid, 
+				:min, 
+				:sec)
+		';
+
+	    $statement = $this->database->prepare($sql);
+		$statement->bindValue(':gameid', $game_id);
+		$statement->bindValue(':min', $min);
+		$statement->bindValue(':sec', $sec);
+
+		$result = array(
+            "success" => $statement->execute(),
+            "message" => $statement->errorCode()
+	    );
+
+		json_encode($result);
+	}
 }
 
 ?>

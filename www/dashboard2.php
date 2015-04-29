@@ -1,7 +1,6 @@
 <?php
 
 require_once('../src/Repository.php');
-require_once('../src/timer.php');
 
 $repo = new Repository();
 $game = $repo->GetActiveGame();
@@ -47,19 +46,9 @@ $game = $repo->GetActiveGame();
 				<?php }	?>
 				</ul>
 			</div>
-<<<<<<< HEAD:www/dashboard2.php
-			<div class="game" data-id="<?=$game['GameID']?>" data-blind="<?=$game['BlindIncrementID']?>" data-buyin="<?=$game['BuyInID']?>">			
-				<div class="timer"><?=$game['GameID']?>}</div>
+			<div class="game" data-id="<?=$game['GameID']?>" data-blind="<?=$game['BlindIncrementID']?>" data-buyin="<?=$game['BuyInID']?>">
+				<?=$game['GameID']?>
 			</div>
-=======
-			<?php
-				$gamedata = $data['game'];
-				
-				$show_game = "<div class='game' data-id='{$gamedata['GameID']}' data-blind='{$gamedata['BlindIncrementID']}' data-buyin='{$gamedata['BuyInID']}'></div>";
-				
-				echo $show_game;
-				?>
->>>>>>> origin/master:dashboard.php
 			<div class="timer">
 				<audio id="siren" src="sounds/siren_noise.wav" controls preload="auto" autobuffer></audio>
 				<table>
@@ -100,85 +89,61 @@ $game = $repo->GetActiveGame();
         <footer>
             <div class="content-wrapper">
                 <div>
-                    <p>&copy; 2015 - HomeGame - Jaime B.</p>
+                    <p>&copy; 2015 - PokerPalooza</p>
                 </div>
             </div>
         </footer>
 		<div class="popup-new-game hidden">
-			<form id="Upsert_Game" action="upsertgame.php" method="post">
+			<form id="Upsert_Game" method="post">
 				<div class="form-field">
 					<label for="Date">Date</label>
-					<input type="text" name="Date" />
+					<input type="date" name="Date" id="Date" />
 				</div>
 				<div class="form-field">
 					<label for="BuyinID">Buy-in</label>
-					<Select name="BuyinID">
-						<?php
-							while ($amount = mysql_fetch_array($data['buyinoptions']))
+					<Select id="BuyinID" name="BuyinID">
+						<?php 
+						$selected = 'false';
+						foreach ($repo->GetBuyInOptions() as $option) 
+						{ 
+							if ($option['BuyinID'] == $game['BuyInID']) 
 							{
-								$selected_buyin = null;
-
-								while($gamedata = mysql_fetch_assoc($game))
-								{
-									$selected_buyin = $gamedata['BuyInID'];
-								}
-
-								$show_buyin_options = "<option value='{$amount['BuyinID']}'";
-
-								if ($selected_buyin == $amount['BuyinID'])
-								{
-									$show_buyin_options .= " selected = 'selected'";
-								}
-
-								$show_buyin_options .= ">${$amount['Amount']}";
-
-								if ($Amount['Bounty'] > 0)
-								{
-									$show_buyin_options .= " + ${$Amount['Bounty']} bounty";
-								}
-
-								$show_buyin_options .= "</option>";
-							
-								echo $show_buyin_options;
+								$selected = 'selected';
 							}
 						?>
+							<option value='<?=$option['BuyinID']?>' selected='<?=$selected?>'>
+								<?php 
+								echo "${$option['Amount']}";
+								if (!empty($option['Bounty']) && $option['Bounty'] > 0) 
+								{ 
+									echo " + ${$option['Bounty']}";
+								} 
+								?>
+							</option>
+		                <?php } ?>
 					</select>
 				</div>
 				<div class="form-field">
-<<<<<<< HEAD:www/dashboard2.php
-					<Select name="BuyinID"></select> <!-- Select buy in -->
-					<Select name="BlindID"></select> <!-- Select blind rate -->
-=======
 					<label for="BlindIncrementID">Blinds</label>
-					<Select name="BlindIncrementID">
-						<?php
-							while ($increment = mysql_fetch_array($data['blindoptions']))
+					<Select id="BlindIncrementID" name="BlindIncrementID">
+						<?php 
+						$selected = 'false';
+						foreach ($repo->GetBlindOptions() as $option) 
+						{ 
+							if ($option['BlindIncrementID'] == $game['BlindIncrementID']) 
 							{
-								$selected_blind_increment = null;
-
-								while($gamedata = mysql_fetch_assoc($game))
-								{
-									$selected_blind_increment = $gamedata['BlindIncrementID'];
-								}
-
-								$show_blind_options = "<option value='{$increment['BlindIncrementID']}'";
-
-								if ($selected_blind_increment == $increment['BlindIncrementID'])
-								{
-									$show_blind_options .= " selected = 'selected'";
-								}
-
-								$show_blind_options .= ">{$increment['Length']} minutes</option>";
-							
-								echo $show_blind_options;
+								$selected = 'selected';
 							}
 						?>
+							<option value='<?=$option['BlindIncrementID']?>' selected='<?=$option['BlindIncrementID']==$game['BlindIncrementID']?>'>
+								<?=$option['Length']?> minutes
+							</option>
+		                <?php } ?>
 					</select>
 				</div>
 				<div class="form-field">
 					<label for="BeginningStack">Beginning Stack</label>
->>>>>>> origin/master:dashboard.php
-					<input type="text" name="BeginningStack" />
+					<input type="text" name="BeginningStack" id="BeginningStack" />
 				</div>
 				<div class="button-wrapper">
 					<div id="Button_Upsert_Game" class="button">Submit</div>
@@ -191,14 +156,9 @@ $game = $repo->GetActiveGame();
 					<label for="PlayerID">Players</label>
 					<Select name="PlayerID" id="PlayerID">
 						<option value='0'></option>
-						<?php
-							while ($player = mysql_fetch_array($data['availableplayers']))
-							{
-								$show_player = "<option value='{$player['PlayerID']}'>{$player['FirstName']} {$player['LastName']}</option>";
-							
-								echo $show_player;
-							}
-						?>
+						<?php foreach ($repo->GetAvailablePlayers($game['GameID']) as $player) { ?>
+							<option value='<?=$player['PlayerID']?>'><?=$player['FirstName'] $player['LastName']?></option>
+						<?php } ?>
 					</select>
 				</div>
 				<div class="form-field">
@@ -214,18 +174,8 @@ $game = $repo->GetActiveGame();
 					<input id="Phone" name="Phone" type="text" value="" />
 				</div>
 				<div class="form-field">
-<<<<<<< HEAD:www/dashboard2.php
-					<Select></select> <!-- Select players not in game -->
-					<label for="name">Name</label>
-					<input id="name" name="name" type="text" value="" />
-					<label for="phone">Name</label>
-					<input id="phone" name="phone" type="text" value="" />
-					<label for="email">Email</label>
-					<input id="email" name="email" type="text" value="" />
-=======
 					<label for="Email">Email</label>
 					<input id="Email" name="Email" type="text" value="" />
->>>>>>> origin/master:dashboard.php
 				</div>
 				<div class="button-wrapper">
 					<div id="Button_Upsert_Player" class="button">Submit</div>

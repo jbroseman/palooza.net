@@ -20,7 +20,7 @@
         var data = { "data": $form.serializeArray() };
 
         $.ajax({
-            url: "upsertgame.php",
+            url: "api/upsertgame.php",
             type: "post",
             data: data,
             success: function (data) {
