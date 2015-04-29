@@ -1,7 +1,9 @@
 <?php
 
-require_once('../src/game.php');
-require_once('../src/timer.php');
+require_once('../src/Repository.php');
+
+$repo = new Repository();
+$game = $repo->GetActiveGame();
 
 ?>
 
@@ -29,8 +31,7 @@ require_once('../src/timer.php');
 			</div>
 			<div class="players">
 				<ul>
-				<!-- Here is a different way to do it... -->
-				<?php while ($player = mysql_fetch_array($data['players']))	{ ?>
+				<?php foreach ($repo->GetPlayers($game['GameID']) as $player) { ?>
 					
 					<li class='paidx<?=$player['BuyinCount']?>'>
 						<span><?=$player['FirstName']?></span>
@@ -43,31 +44,11 @@ require_once('../src/timer.php');
 					</li>
 
 				<?php }	?>
-
-				<!-- This was the original way... -->
-				<?php
-					/*
-					while ($player = mysql_fetch_array($data['players']))
-					{
-						$show_player = "<li class='paidx{$player['BuyinCount']}'><span>{$player['FirstName']}</span>";
-						for ($inx = $player['BuyinCount']; $inx > 1; $inx --)
-						{
-							$show_player .= "<div class='rebuy'>";
-							$show_player .= "<img src='img/1up_chip.png' alt='rebuy chip' />";
-							$show_player .= "</div>";
-						}
-						$show_player .= "</li>";
-						echo $show_player;
-					}
-					*/
-				 ?>
 				</ul>
 			</div>
-			<?php
-				$show_game = "<div class='game' data-id='{$gamedata['GameID']}' data-blind='{$gamedata['BlindIncrementID']}' data-buyin='{$gamedata['BuyInID']}'></div>";
-				
-				echo $show_game;
-				?>
+			<div class="game" data-id="<?=$game['GameID']?>" data-blind="<?=$game['BlindIncrementID']?>" data-buyin="<?=$game['BuyInID']?>">
+				<?=$game['GameID']?>
+			</div>
 			<div class="timer">
 				<audio id="siren" src="sounds/siren_noise.wav" controls preload="auto" autobuffer></audio>
 				<table>
@@ -87,103 +68,88 @@ require_once('../src/timer.php');
 			</div>
             <div class="blinds">
                 <ul>
-				<?php
-					while ($blind = mysql_fetch_array($data['blinds']))
-					{
-						$show_blind = "<li class='end-of-rebuy-{$blind['EndOfRebuy']}'><span>{$blind['SmallBlind']}/{$blind['LargeBlind']}</span>";
-						$show_blind .= "<div class='finished'></div></li>";
-						echo $show_blind;
-					}
-				?>
+                <?php foreach ($repo->GetBlinds() as $blind) { ?>
+					<li class="end-of-rebuy-<?=$blind['EndOfRebuy']?>"><span><?=$blind['SmallBlind']?>/<?=$blind['LargeBlind']?></span>
+						<div class="finished"></div>
+					</li>
+                <?php } ?>
                 </ul>
             </div> 
             <div class="chip-values plaque">
 				<div class="bevel">
-					<?php
-						while ($chip = mysql_fetch_array($data['chips']))
-						{
-							$show_chip = "<div class='item'>";
-							$show_chip .= "<span>{$chip['Denomination']}</span>";
-							$show_chip .= "<img src='img/{$chip['ImageFilename']}' alt='{$chip['PrimaryColor']} chip, {$chip['Denomination']} units' />";
-							$show_chip .= "</div>";
-							echo $show_chip;
-						}
-					?>
+					<?php foreach ($repo->GetChips() as $chip) { ?>
+						<div class="item">
+							<span><?=$chip['Denomination']?></span>
+							<img src="img/<?=$chip['ImageFilename']?>" alt="<?=$chip['PrimaryColor']?> chip, <?=$chip['Denomination']?> units" />
+						</div>
+					<?php } ?>
 				</div>
             </div>
         </div>
         <footer>
             <div class="content-wrapper">
                 <div>
-                    <p>&copy; 2015 - HomeGame - Jaime B.</p>
+                    <p>&copy; 2015 - PokerPalooza</p>
                 </div>
             </div>
         </footer>
 		<div class="popup-new-game hidden">
-			<form id="Upsert_Game" action="upsertgame.php" method="post">
+			<form id="Upsert_Game" method="post">
 				<div class="form-field">
 					<label for="Date">Date</label>
-					<input type="date" name="Date" />
+					<input type="date" name="Date" id="Date" />
 				</div>
 				<div class="form-field">
 					<label for="BuyinID">Buy-in</label>
-					<Select name="BuyinID">
-						<?php
-							while ($amount = mysql_fetch_array($data['buyinoptions']))
-							{
-								$selected_buyin = $gamedata['BuyInID'];
-
-								$show_buyin_options = "<option value='{$amount['BuyinID']}'";
-
-								if ($selected_buyin == $amount['BuyinID'])
-								{
-									$show_buyin_options .= " selected = 'selected'";
-								}
-
-								$show_buyin_options .= ">\${$amount['Amount']}";
-
-								if ($Amount['Bounty'] > 0)
-								{
-									$show_buyin_options .= " + \${$Amount['Bounty']} bounty";
-								}
-
-								$show_buyin_options .= "</option>";
+					<select id="BuyinID" name="BuyinID">
+					<?php
+						foreach ($repo->GetBuyInOptions() as $option) 
+						{ 
+							$selected = '';							
 							
-								echo $show_buyin_options;
+							if ($option['BuyinID'] == $game['BuyInID']) 
+							{
+								$selected = 'selected';
 							}
-						?>
+
+							if (!empty($option['Bounty']) && $option['Bounty'] > 0)
+							{
+								$text = "{$option['Amount']} {$option['Bounty']}";
+							}
+							else
+							{
+								$text = $option['Amount'];
+							}
+					?>
+						<option value="<?=$option['BuyinID']?>" <?=$selected?>>
+							<?=$text?>
+						</option>
+	                <?php
+	                	}
+	                ?>
 					</select>
 				</div>
 				<div class="form-field">
 					<label for="BlindIncrementID">Blinds</label>
-					<Select name="BlindIncrementID">
-						<?php
-							while ($increment = mysql_fetch_array($data['blindoptions']))
+					<Select id="BlindIncrementID" name="BlindIncrementID">
+						<?php 
+						$selected = 'false';
+						foreach ($repo->GetBlindOptions() as $option) 
+						{ 
+							if ($option['BlindIncrementID'] == $game['BlindIncrementID']) 
 							{
-								$selected_blind_increment = null;
-
-								while($gamedata = mysql_fetch_assoc($game))
-								{
-									$selected_blind_increment = $gamedata['BlindIncrementID'];
-								}
-
-								$show_blind_options = "<option value='{$increment['BlindIncrementID']}'";
-
-								if ($selected_blind_increment == $increment['BlindIncrementID'])
-								{
-									$show_blind_options .= " selected = 'selected'";
-								}
-
-								$show_blind_options .= ">{$increment['Length']} minutes</option>";
-							
-								echo $show_blind_options;
+								$selected = 'selected';
 							}
 						?>
+							<option value='<?=$option['BlindIncrementID']?>' selected='<?=$option['BlindIncrementID']==$game['BlindIncrementID']?>'>
+								<?=$option['Length']?> minutes
+							</option>
+		                <?php } ?>
 					</select>
 				</div>
 				<div class="form-field">
 					<label for="BeginningStack">Beginning Stack</label>
-					<input type="text" name="BeginningStack" />
+					<input type="text" name="BeginningStack" id="BeginningStack" />
 				</div>
 				<div class="button-wrapper">
 					<div id="Button_Upsert_Game" class="button">Submit</div>
@@ -194,17 +160,24 @@ require_once('../src/timer.php');
 			<form id="Upsert_Player" action="addplayer.php" method="post">
 				<div class="form-field">
 					<label for="PlayerID">Players</label>
-					<Select name="PlayerID" id="PlayerID">
-						<option value='0'></option>
-						<?php
-							while ($player = mysql_fetch_array($data['availableplayers']))
-							{
-								$show_player = "<option value='{$player['PlayerID']}'>{$player['FirstName']} {$player['LastName']}</option>";
-							
-								echo $show_player;
-							}
-						?>
-					</select>
+					<?php
+						$players = $repo->GetAvailablePlayers($game['GameID']);
+
+						if (count($players) === 0) {
+					?>
+
+						<span>There are no players available</span>
+
+					<?php } else { ?>
+
+						<select name="PlayerID" id="PlayerID">
+							<?php foreach ($players as $player) { ?>
+								<option value='<?=$player['PlayerID']?>'><?=$player['FirstName']?> <?=$player['LastName']?></option>
+							<?php } ?>
+						</select>
+
+					<?php } ?>
+
 				</div>
 				<div class="form-field">
 					<label for="Firstname">First Name</label>
