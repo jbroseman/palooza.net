@@ -1,8 +1,10 @@
 ﻿<?php
-	require_once('../src/Repository.php');
+	require_once('../../src/Repository.php');
 
 	$repo = new Repository();
-	$data = json_decode($_POST['data'], TRUE);
-	$result = $repo->UpsertGame($data)
-	print json_encode($result);
+	$data = json_decode(file_get_contents('php://input'), true);
+	$result = $repo->UpsertGame($data);
+	header('HTTP/1.1 200 OK');
+	header('Content-type: application/json');
+	echo json_encode($result);
 ?>

@@ -159,10 +159,10 @@ class Repository
 		$statement->bindValue(':buyin', $game['BuyInID']);
 		$statement->bindValue(':stack', $game['BeginningStack']);
 
-		return array(
-            "success" => $statement->execute(),
-            "message" => $statement->errorCode()
-	    );
+		$statement->execute();
+		$success = $statement->rowCount() === 1;
+
+		return array('success' => $success);
 	}
 
 	function GetCurrentTime($game_id)

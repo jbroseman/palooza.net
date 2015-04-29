@@ -16,13 +16,18 @@
     })
 
     function upsertGame() {
-        var $form = $("#Upsert_Game");
-        var data = { "data": $form.serializeArray() };
+        var data = {
+            'Date': $('#Date').val(),
+            'BlindIncrementID': $('#BlindIncrementID').val(),
+            'BuyInID': $('#BuyinID').val(),
+            'BeginningStack': $('#BeginningStack').val()
+        };
 
         $.ajax({
             url: "api/upsertgame.php",
             type: "post",
-            data: data,
+            contentType: 'application/json',
+            data: JSON.stringify(data),
             success: function (data) {
                 if (data)
                 {
