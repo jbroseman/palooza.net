@@ -87,7 +87,7 @@ class Repository
 
 	public function GetBuyInOptions()
 	{
-	    $$sql = '
+	    $sql = '
 	        SELECT  BuyinID, 
 	                Amount, 
 	                Bounty 
@@ -123,7 +123,7 @@ class Repository
 	                FirstName,
 	                LastName
 	        FROM    players
-	        WHERE   PlayerID NOT IN (SELECT PlayerID FROM gameplayers WHERE GameID = :gameID
+	        WHERE   PlayerID NOT IN (SELECT PlayerID FROM gameplayers WHERE GameID = :gameID)
 	    ';
 	          
 	    $statement = $this->database->prepare($sql);

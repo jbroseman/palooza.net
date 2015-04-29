@@ -13,7 +13,13 @@ echo '<p>'.var_dump($chips).'</p>';
 $blinds = $repo->GetBlinds();
 echo '<p>'.var_dump($blinds).'</p>';
 
-$players = $repo->GetPlayers(1);
+$players = $repo->GetPlayers($game['GameID']);
 echo '<p>'.var_dump($players).'</p>';
+
+$buyInOptions = $repo->GetBuyInOptions();
+echo '<p>'.var_dump($buyInOptions).'</p>';
+
+$availPlayers = $repo->GetAvailablePlayers($game['GameID']);
+echo '<p>'.var_dump($availPlayers).'</p>';
 
 ?>

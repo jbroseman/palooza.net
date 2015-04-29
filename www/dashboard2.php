@@ -101,26 +101,32 @@ $game = $repo->GetActiveGame();
 				</div>
 				<div class="form-field">
 					<label for="BuyinID">Buy-in</label>
-					<Select id="BuyinID" name="BuyinID">
-						<?php 
-						$selected = 'false';
+					<select id="BuyinID" name="BuyinID">
+					<?php
 						foreach ($repo->GetBuyInOptions() as $option) 
 						{ 
+							$selected = '';							
+							
 							if ($option['BuyinID'] == $game['BuyInID']) 
 							{
 								$selected = 'selected';
 							}
-						?>
-							<option value='<?=$option['BuyinID']?>' selected='<?=$selected?>'>
-								<?php 
-								echo "${$option['Amount']}";
-								if (!empty($option['Bounty']) && $option['Bounty'] > 0) 
-								{ 
-									echo " + ${$option['Bounty']}";
-								} 
-								?>
-							</option>
-		                <?php } ?>
+
+							if (!empty($option['Bounty']) && $option['Bounty'] > 0)
+							{
+								$text = "{$option['Amount']} {$option['Bounty']}";
+							}
+							else
+							{
+								$text = $option['Amount'];
+							}
+					?>
+						<option value="<?=$option['BuyinID']?>" <?=$selected?>>
+							<?=$text?>
+						</option>
+	                <?php
+	                	}
+	                ?>
 					</select>
 				</div>
 				<div class="form-field">
@@ -154,12 +160,24 @@ $game = $repo->GetActiveGame();
 			<form id="Upsert_Player" action="addplayer.php" method="post">
 				<div class="form-field">
 					<label for="PlayerID">Players</label>
-					<Select name="PlayerID" id="PlayerID">
-						<option value='0'></option>
-						<?php foreach ($repo->GetAvailablePlayers($game['GameID']) as $player) { ?>
-							<option value='<?=$player['PlayerID']?>'><?=$player['FirstName']?> <?=$player['LastName']?></option>
-						<?php } ?>
-					</select>
+					<?php
+						$players = $repo->GetAvailablePlayers($game['GameID']);
+
+						if (count($players) === 0) {
+					?>
+
+						<span>There are no players available</span>
+
+					<?php } else { ?>
+
+						<select name="PlayerID" id="PlayerID">
+							<?php foreach ($players as $player) { ?>
+								<option value='<?=$player['PlayerID']?>'><?=$player['FirstName']?> <?=$player['LastName']?></option>
+							<?php } ?>
+						</select>
+
+					<?php } ?>
+
 				</div>
 				<div class="form-field">
 					<label for="Firstname">First Name</label>
