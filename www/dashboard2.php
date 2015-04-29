@@ -157,7 +157,7 @@ $game = $repo->GetActiveGame();
 					<Select name="PlayerID" id="PlayerID">
 						<option value='0'></option>
 						<?php foreach ($repo->GetAvailablePlayers($game['GameID']) as $player) { ?>
-							<option value='<?=$player['PlayerID']?>'><?=$player['FirstName'] $player['LastName']?></option>
+							<option value='<?=$player['PlayerID']?>'><?=$player['FirstName']?> <?=$player['LastName']?></option>
 						<?php } ?>
 					</select>
 				</div>
