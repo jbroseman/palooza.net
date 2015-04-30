@@ -36,6 +36,16 @@ ul, li {
     clear: both;
 }
 
+#modal_overlay{
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: rgba(0, 0, 0, .9);
+    z-index: 3;
+}
+
 .plaque {
     background: linear-gradient(75deg, black, #2a2a2a, black, #191919, black);
     border-radius: 20px;
@@ -47,6 +57,34 @@ ul, li {
     border: 1px solid black;
     background: linear-gradient(55deg, black, #191919, black);
     border-radius: 15px;
+}
+
+.button {
+    font-size: 1.5em;
+    font-family: 'arial';
+    display: inline;
+    padding: 0 5px;
+    color: #000000;
+    background-color: #d3ff3d;
+    border: none;
+    border-radius: 5px;
+    box-shadow: 2px 2px 10px #000000;
+    text-shadow: 1px 1px 5px #2a2a2a;
+    text-align: center;
+    margin: 0 5px;
+}
+
+.button:hover {
+    cursor: pointer;
+    color: #000000;
+    background-color: #f3ff55;
+}
+
+.button:active {
+    cursor: pointer;
+    color: #000000;
+    background-color: #f3ff55;
+    box-shadow: 2px 2px 10px #000000;
 }
 
 .header {
@@ -168,8 +206,6 @@ ul, li {
 }
 
 .timer .control td {
-    font-size: 2em;
-    font-family: 'arial';
 }
 
 .timer td.first {
@@ -182,30 +218,8 @@ ul, li {
     width: 45%;
 }
 
-.timer .button {
-    display: inline;
-    padding: 0 5px;
-    color: #000000;
-    background-color: #d3ff3d;
-    border: none;
-    border-radius: 5px;
-    box-shadow: 2px 2px 10px #000000;
-    text-shadow: 1px 1px 5px #2a2a2a;
-    text-align: center;
-    margin: 0 5px;
-}
-
-.timer .button:hover {
-    cursor: pointer;
-    color: #000000;
-    background-color: #f3ff55;
-}
-
-.timer .button:active {
-    cursor: pointer;
-    color: #000000;
-    background-color: #f3ff55;
-    box-shadow: 2px 2px 10px #000000;
+.button-wrapper {
+    margin-top: 1.5em;
 }
 
 .chip-values {
@@ -271,18 +285,52 @@ ul, li {
     width: 20pt;
 }
 
+/* Forms
+----------------------------------------------------------*/
+form {
+    text-align: center;
+}
+.form-field {
+    margin: .5em 0 0 0;
+    width: 80%;
+    display: inline-block;
+    vertical-align: top;
+}
+
+.form-field label,
+.form-field input,
+.form-field select,
+.form-field textarea {
+    display: inline-block;
+    vertical-align: top;
+}
+
+.form-field label {
+    width: 35%;
+    text-align: left;
+}
+
+.form-field input,
+.form-field select,
+.form-field textarea {
+    width: 60%;
+}
+
 /* Popups
 ----------------------------------------------------------*/
 .popup-new-game,
 .popup-add-player {
     z-index: 5;
-    background-color: #630000;
     color: white;
     position: absolute;
-    width: 60%;
-    left: 20%;
-    top: 35%;
-    box-shadow: 0px 0px 600px 300px black;
+    width: 50%;
+    left: 25%;
+    top: 30%;
+}
+
+.popup-new-game .bevel,
+.popup-add-player .bevel {
+    padding: 1em 0;
 }
 
 /* footer

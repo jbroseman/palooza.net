@@ -1,6 +1,5 @@
 ﻿$(function () {
     var timer = null;
-    var running = false;
     loadTimer();
 
     $('#start_timer').on('click', function () {
@@ -87,8 +86,8 @@
         time['sec'] = $('.timer .seconds').text();
 
         $.ajax({
-            url: "stoptimer.php",
-            data: time,
+            url: "api/stoptimer.php",
+            data: { 'data': time },
             dataType: 'json',
             success: function (data) {
                 if (data && data.message.length) {

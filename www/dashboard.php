@@ -93,112 +93,121 @@ $game = $repo->GetActiveGame();
                 </div>
             </div>
         </footer>
-		<div class="popup-new-game hidden">
-			<form id="Upsert_Game" method="post">
-				<div class="form-field">
-					<label for="Date">Date</label>
-					<input type="date" name="Date" id="Date" />
-				</div>
-				<div class="form-field">
-					<label for="BuyinID">Buy-in</label>
-					<select id="BuyinID" name="BuyinID">
-					<?php
-						foreach ($repo->GetBuyInOptions() as $option) 
-						{ 
-							$selected = '';							
-							
-							if ($option['BuyinID'] == $game['BuyInID']) 
-							{
-								$selected = 'selected';
-							}
-
-							if (!empty($option['Bounty']) && $option['Bounty'] > 0)
-							{
-								$text = "{$option['Amount']} {$option['Bounty']}";
-							}
-							else
-							{
-								$text = $option['Amount'];
-							}
-					?>
-						<option value="<?=$option['BuyinID']?>" <?=$selected?>>
-							<?=$text?>
-						</option>
-	                <?php
-	                	}
-	                ?>
-					</select>
-				</div>
-				<div class="form-field">
-					<label for="BlindIncrementID">Blinds</label>
-					<Select id="BlindIncrementID" name="BlindIncrementID">
-						<?php 
-						$selected = 'false';
-						foreach ($repo->GetBlindOptions() as $option) 
-						{ 
-							if ($option['BlindIncrementID'] == $game['BlindIncrementID']) 
-							{
-								$selected = 'selected';
-							}
+		<div id="modal_overlay" class="hidden"></div>
+		<div class="popup-new-game plaque hidden">
+			<div class="bevel">
+				<form id="Upsert_Game" method="post">
+					<div class="form-field">
+						<label for="Date">Date</label>
+						<input type="date" name="Date" id="Date" />
+					</div>
+					<div class="form-field">
+						<label for="BuyinID">Buy-in</label>
+						<select id="BuyinID" name="BuyinID">
+						<?php
+							foreach ($repo->GetBuyInOptions() as $option) 
+							{ 
+								$selected = '';							
+								
+								if ($option['BuyinID'] == $game['BuyInID']) 
+								{
+									$selected = 'selected';
+								}
+	
+								if (!empty($option['Bounty']) && $option['Bounty'] > 0)
+								{
+									$text = "{$option['Amount']} {$option['Bounty']}";
+								}
+								else
+								{
+									$text = $option['Amount'];
+								}
 						?>
-							<option value='<?=$option['BlindIncrementID']?>' selected='<?=$option['BlindIncrementID']==$game['BlindIncrementID']?>'>
-								<?=$option['Length']?> minutes
+							<option value="<?=$option['BuyinID']?>" <?=$selected?>>
+								<?=$text?>
 							</option>
-		                <?php } ?>
-					</select>
-				</div>
-				<div class="form-field">
-					<label for="BeginningStack">Beginning Stack</label>
-					<input type="text" name="BeginningStack" id="BeginningStack" />
-				</div>
-				<div class="button-wrapper">
-					<div id="Button_Upsert_Game" class="button">Submit</div>
-				</div>
-			</form>
-		</div>
-		<div class="popup-add-player hidden">
-			<form id="Upsert_Player" action="addplayer.php" method="post">
-				<div class="form-field">
-					<label for="PlayerID">Players</label>
-					<?php
-						$players = $repo->GetAvailablePlayers($game['GameID']);
-
-						if (count($players) === 0) {
-					?>
-
-						<span>There are no players available</span>
-
-					<?php } else { ?>
-
-						<select name="PlayerID" id="PlayerID">
-							<?php foreach ($players as $player) { ?>
-								<option value='<?=$player['PlayerID']?>'><?=$player['FirstName']?> <?=$player['LastName']?></option>
-							<?php } ?>
+		                <?php
+		                	}
+		                ?>
 						</select>
-
-					<?php } ?>
-
-				</div>
-				<div class="form-field">
-					<label for="Firstname">First Name</label>
-					<input id="FirstName" name="FirstName" type="text" value="" />
-				</div>
-				<div class="form-field">
-					<label for="LastName">Last Name</label>
-					<input id="LastName" name="LastName" type="text" value="" />
-				</div>
-				<div class="form-field">
-					<label for="Phone">Phone</label>
-					<input id="Phone" name="Phone" type="text" value="" />
-				</div>
-				<div class="form-field">
-					<label for="Email">Email</label>
-					<input id="Email" name="Email" type="text" value="" />
-				</div>
-				<div class="button-wrapper">
-					<div id="Button_Upsert_Player" class="button">Submit</div>
-				</div>
-			</form>
+					</div>
+					<div class="form-field">
+						<label for="BlindIncrementID">Blinds</label>
+						<Select id="BlindIncrementID" name="BlindIncrementID">
+							<?php 
+							$selected = 'false';
+							foreach ($repo->GetBlindOptions() as $option) 
+							{ 
+								if ($option['BlindIncrementID'] == $game['BlindIncrementID']) 
+								{
+									$selected = 'selected';
+								}
+							?>
+								<option value='<?=$option['BlindIncrementID']?>' selected='<?=$option['BlindIncrementID']==$game['BlindIncrementID']?>'>
+									<?=$option['Length']?> minutes
+								</option>
+			                <?php } ?>
+						</select>
+					</div>
+					<div class="form-field">
+						<label for="BeginningStack">Beginning Stack</label>
+						<input type="text" name="BeginningStack" id="BeginningStack" />
+					</div>
+					<div class="button-wrapper">
+						<div id="Button_Upsert_Game" class="button">Submit</div>
+						<div id="Button_Cancel_Upsert_Game" class="button">Cancel</div>
+					</div>
+				</form>
+			</div>
+		</div>
+		<div class="popup-add-player plaque hidden">
+			<div class="bevel">
+				<form id="Upsert_Player" action="addplayer.php" method="post">
+					<input type="hidden" name="GameID" id="GameID" value="<?=$game['GameID']?>" />
+					<div class="form-field">
+						<label for="PlayerID">Players</label>
+						<?php
+							$players = $repo->GetAvailablePlayers($game['GameID']);
+	
+							if (count($players) === 0) {
+						?>
+	
+							<span>There are no players available</span>
+	
+						<?php } else { ?>
+	
+							<select name="PlayerID" id="PlayerID">
+								<option value='0'>Create New</option>
+								<?php foreach ($players as $player) { ?>
+									<option value='<?=$player['PlayerID']?>'><?=$player['FirstName']?> <?=$player['LastName']?></option>
+								<?php } ?>
+							</select>
+	
+						<?php } ?>
+	
+					</div>
+					<div class="form-field">
+						<label for="Firstname">First Name</label>
+						<input id="FirstName" name="FirstName" type="text" value="" />
+					</div>
+					<div class="form-field">
+						<label for="LastName">Last Name</label>
+						<input id="LastName" name="LastName" type="text" value="" />
+					</div>
+					<div class="form-field">
+						<label for="Phone">Phone</label>
+						<input id="Phone" name="Phone" type="text" value="" />
+					</div>
+					<div class="form-field">
+						<label for="Email">Email</label>
+						<input id="Email" name="Email" type="text" value="" />
+					</div>
+					<div class="button-wrapper">
+						<div id="Button_Upsert_Player" class="button">Submit</div>
+						<div id="Button_Cancel_Upsert_Player" class="button">Cancel</div>
+					</div>
+				</form>
+			</div>
 		</div>
     </body>
 </html>

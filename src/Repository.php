@@ -77,6 +77,7 @@ class Repository
 	                Length 
 	        FROM    blindincrement 
 	        WHERE   Status > 0
+			ORDER BY Length
 	    ';
 
 	    $statement = $this->database->query($sql);
@@ -164,6 +165,61 @@ class Repository
 
 		return array('success' => $success);
 	}
+	
+	function UpsertGamePlayer($player)
+	{
+	    $sql;
+	    if (empty($player['PlayerID']))
+	    {
+	        $sql = '
+	            INSERT INTO players 
+	                (FirstName, 
+	                LastName, 
+	                Phone, 
+	                Email)
+	            VALUES 
+	                (:fname,
+	                :lname,
+	                :phone,
+	                :email)
+	            ';
+
+		    $statement = $this->database->prepare($sql);
+			$statement->bindValue(':fname', $player['FirstName']);
+			$statement->bindValue(':lname', $player['LastName']);
+			$statement->bindValue(':phone', $player['Phone']);
+			$statement->bindValue(':email', $player['Email']);
+	
+			$statement->execute();
+			
+			$player['PlayerID'] = $this->database->lastInsertId();
+		}
+		
+		if (!empty($player['PlayerID']))
+		{
+			$sql = '
+			    INSERT INTO gameplayers 
+	                (GameID, 
+	                PlayerID)
+	            VALUES 
+	                (:gameid,
+	                :playerid)
+	            ';
+	
+		    $statement = $this->database->prepare($sql);
+			$statement->bindValue(':gameID', $player['GameID']);
+			$statement->bindValue(':blind', $player['PlayerID']);
+	
+			$statement->execute();
+			$success = $statement->rowCount() === 1;
+		}
+		else
+		{
+			$success = false;
+		}
+
+		return array('success' => $success);
+	}
 
 	function GetCurrentTime($game_id)
 	{
@@ -184,9 +240,13 @@ class Repository
 		return $statement->fetch(PDO::FETCH_ASSOC);
 	}
 
-	function UpsertCurrentTime($game_id, $min, $sec)
+	function UpsertCurrentTime($data)
 	{
 		$sql = '
+			UPDATE	timervalues
+			SET		Status = 0
+			WHERE	Status = 1
+			
 			INSERT INTO timervalues (
 				GameID, 
 				Minutes, 
@@ -198,9 +258,9 @@ class Repository
 		';
 
 	    $statement = $this->database->prepare($sql);
-		$statement->bindValue(':gameid', $game_id);
-		$statement->bindValue(':min', $min);
-		$statement->bindValue(':sec', $sec);
+		$statement->bindValue(':gameid', $data['game_id']);
+		$statement->bindValue(':min', $data['min']);
+		$statement->bindValue(':sec', $data['sec']);
 
 		$result = array(
             "success" => $statement->execute(),

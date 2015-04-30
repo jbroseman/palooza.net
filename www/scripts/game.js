@@ -1,19 +1,31 @@
 ﻿$(function () {
     $('#New_Game').on('click', function () {
+        $('#modal_overlay').removeClass('hidden');
         $('.popup-new-game').removeClass('hidden');
-    });
-
-    $('#Add_Player').on('click', function () {
-        $('.popup-add-player').removeClass('hidden');
     });
 
     $('#Button_Upsert_Game').on('click', function () {
         upsertGame();
-    })
+    });
+
+    $('#Button_Cancel_Upsert_Game').on('click', function () {
+        $('#modal_overlay').addClass('hidden');
+        $('.popup-new-game').addClass('hidden');
+    });
+
+    $('#Add_Player').on('click', function () {
+        $('#modal_overlay').removeClass('hidden');
+        $('.popup-add-player').removeClass('hidden');
+    });
 
     $('#Button_Upsert_Player').on('click', function () {
         upsertGamePlayer();
-    })
+    });
+
+    $('#Button_Cancel_Upsert_Player').on('click', function () {
+        $('#modal_overlay').addClass('hidden');
+        $('.popup-add-player').addClass('hidden');
+    });
 
     function upsertGame() {
         var data = {
@@ -35,6 +47,7 @@
                         $('#result_message').html(data.message);
                     }
                     else {
+                        $('#modal_overlay').addClass('hidden');
                         $('.popup-new-game').addClass('hidden');
                         location.reload();
                     }
@@ -48,7 +61,7 @@
         var data = JSON.stringify($form.serializeArray());
 
         $.ajax({
-            url: "upsertgameplayer.php",
+            url: "api/upsertgameplayer.php",
             data: data,
             dataType: 'json',
             success: function (data) {
@@ -57,6 +70,7 @@
                         $('#result_message').html(data.message);
                     }
                     else {
+                        $('#modal_overlay').addClass('hidden');
                         $('.popup-add-player').addClass('hidden');
                         location.reload();
                     }
