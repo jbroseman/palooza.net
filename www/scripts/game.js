@@ -1,7 +1,24 @@
 ﻿$(function () {
+
+    $('#Menu_Expand').on('click', function () {
+        $('#Modal_Overlay').removeClass('hidden');
+        $('.popup').addClass('hidden');
+        $('.popup.main-menu').removeClass('hidden');
+    });
+
+    $('#menu_collapse').on('click', function () {
+        $('#Modal_Overlay').addClass('hidden');
+        $('.popup.main-menu').addClass('hidden');
+    });
+    
     $('#New_Game').on('click', function () {
-        $('#modal_overlay').removeClass('hidden');
-        $('.popup-new-game').removeClass('hidden');
+        if ($(this).hasClass('disabled'))
+        {
+            return false;
+        }
+        $('#Modal_Overlay').removeClass('hidden');
+        $('.popup').addClass('hidden');
+        $('.popup.new-game').removeClass('hidden');
     });
 
     $('#Button_Upsert_Game').on('click', function () {
@@ -9,13 +26,14 @@
     });
 
     $('#Button_Cancel_Upsert_Game').on('click', function () {
-        $('#modal_overlay').addClass('hidden');
-        $('.popup-new-game').addClass('hidden');
+        $('#Modal_Overlay').addClass('hidden');
+        $('.popup.new-game').addClass('hidden');
     });
 
     $('#Add_Player').on('click', function () {
-        $('#modal_overlay').removeClass('hidden');
-        $('.popup-add-player').removeClass('hidden');
+        $('#Modal_Overlay').removeClass('hidden');
+        $('.popup').addClass('hidden');
+        $('.popup.add-player').removeClass('hidden');
     });
 
     $('#Button_Upsert_Player').on('click', function () {
@@ -23,7 +41,7 @@
     });
 
     $('#Button_Cancel_Upsert_Player').on('click', function () {
-        $('#modal_overlay').addClass('hidden');
+        $('#Modal_Overlay').addClass('hidden');
         $('.popup-add-player').addClass('hidden');
     });
 

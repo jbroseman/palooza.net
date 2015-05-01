@@ -25,11 +25,8 @@ $game = $repo->GetActiveGame();
             </div>
         </div>
         <div id="body">
-			<div class="main-menu">
-				<div class="button" id="New_Game">New Game</div>
-				<div class="button" id="Add_Player">Add Player</div>
-			</div>
 			<div class="players">
+				<div class="button" id="Add_Player">Add</div>
 				<ul>
 				<?php foreach ($repo->GetPlayers($game['GameID']) as $player) { ?>
 					
@@ -47,7 +44,6 @@ $game = $repo->GetActiveGame();
 				</ul>
 			</div>
 			<div class="game" data-id="<?=$game['GameID']?>" data-blind="<?=$game['BlindIncrementID']?>" data-buyin="<?=$game['BuyInID']?>">
-				<?=$game['GameID']?>
 			</div>
 			<div class="timer">
 				<audio id="siren" src="sounds/siren_noise.wav" controls preload="auto" autobuffer></audio>
@@ -70,7 +66,7 @@ $game = $repo->GetActiveGame();
                 <ul>
                 <?php foreach ($repo->GetBlinds() as $blind) { ?>
 					<li class="end-of-rebuy-<?=$blind['EndOfRebuy']?>"><span><?=$blind['SmallBlind']?>/<?=$blind['LargeBlind']?></span>
-						<div class="finished"></div>
+						<div class="status"></div>
 					</li>
                 <?php } ?>
                 </ul>
@@ -93,7 +89,21 @@ $game = $repo->GetActiveGame();
                 </div>
             </div>
         </footer>
-		<div id="modal_overlay" class="hidden"></div>
+		<div id="Modal_Overlay" class="hidden"></div>
+		<div id="Menu_Expand">MAIN MENU</div>
+		<div class="popup main-menu plaque hidden">
+			<div class="bevel">
+				<?php if (empty($game['GameID']) || $game['GameID'] == 0) { ?>
+					<div class="button" id="New_Game">New Game</div>
+				<?php } else { ?>
+					<div class="button disabled" title="Game Running" id="New_Game">New Game</div>
+				<?php } ?>
+				<div class="button disabled" title="this feature is under construction" id="Stats">Statistics</div>
+				<?php if (!empty($game['GameID']) && $game['GameID'] == 0) { ?>
+					<div class="button"" id="menu_collapse">Back to Game</div>
+				<?php } ?>
+			</div>
+		</div>
 		<div class="popup-new-game plaque hidden">
 			<div class="bevel">
 				<form id="Upsert_Game" method="post">

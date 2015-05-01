@@ -36,6 +36,22 @@ ul, li {
     clear: both;
 }
 
+#menu_expand {
+    position: absolute;
+    background-color: rgba(255, 255, 255, .07);
+    box-shadow: 1px 1px 5px black;
+    top: 0;
+    left: 0;
+    padding: .5em 1em;
+    cursor: pointer;
+}
+
+#menu_expand:hover {
+    position: absolute;
+    background-color: rgba(174, 255, 0, .09);
+    box-shadow: 1px 1px 5px 5px black;
+}
+
 #modal_overlay{
     position: absolute;
     top: 0;
@@ -72,12 +88,17 @@ ul, li {
     text-shadow: 1px 1px 5px #2a2a2a;
     text-align: center;
     margin: 0 5px;
+    cursor: pointer;
 }
 
 .button:hover {
-    cursor: pointer;
     color: #000000;
     background-color: #f3ff55;
+}
+
+.button.disabled {
+    opacity: .5;
+    cursor: not-allowed;
 }
 
 .button:active {
@@ -139,11 +160,16 @@ ul, li {
     overflow-x: hidden;
     overflow-y: auto;
     width: 25%;
-    font-size: 1.6em;
-    line-height: 1.1em;
+}
+
+.players .button {
+    display: inline-block;
+    margin: 0 0 .5em .5em;
 }
 
 .players li {
+    font-size: 1.6em;
+    line-height: 1.1em;
     position: relative;
     margin: 0 0 5px 0;
     padding: 0 0 5px 0;
@@ -277,7 +303,25 @@ ul, li {
     padding: 5pt 1em 5pt 1em;
 }
 
-.blinds li .finished {
+.blinds li:not(.finished):first-of-type span {
+    font-size: 1.2em;
+    font-weight: bold;
+}
+
+.blinds li:not(.finished):first-of-type .status {
+    position:  absolute;
+    top: -5px;
+    right: 0;
+    left: 1em;
+    bottom: -5px;
+    background: 
+        linear-gradient(45deg, rgba(255, 255, 255, .3), rgba(255, 255, 255, .1), rgba(255, 255, 255, .04), rgba(255, 255, 255, .1)),
+        linear-gradient(rgba(0, 0, 0, .8) 10%, transparent 10%, transparent 90%, rgba(0, 0, 0, .7) 90%), 
+        linear-gradient(to right, rgba(0, 0, 0, .95) 2%, transparent 2%);
+    box-shadow: 0px 0px 20px #aeff00;
+}
+
+.blinds li.finished .status {
     position: absolute;
     right: 20pt;
     top: 0;
@@ -318,8 +362,7 @@ form {
 
 /* Popups
 ----------------------------------------------------------*/
-.popup-new-game,
-.popup-add-player {
+.popup {
     z-index: 5;
     color: white;
     position: absolute;
@@ -328,9 +371,20 @@ form {
     top: 30%;
 }
 
-.popup-new-game .bevel,
-.popup-add-player .bevel {
+.popup .bevel {
     padding: 1em 0;
+}
+
+.popup.main-menu {
+    text-align: center;
+    width: 30%;
+    left: 35%;
+}
+
+.popup.main-menu .button {
+    width: 70%;
+    display: inline-block;
+    margin: .5em auto;
 }
 
 /* footer
