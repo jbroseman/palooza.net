@@ -28,7 +28,7 @@ class Repository
 	    			Date,
 	    			EndOfRebuy,
 	    			BlindIncrementID,
-	    			BuyInID
+	    			BuyInID	
 	    	FROM 	games
 	    	WHERE 	Status = 1
 	    	LIMIT 	1
@@ -57,12 +57,13 @@ class Repository
 	public function GetBlinds()
 	{
 		$sql = '
-	    	SELECT 	BlindID,
+	    	SELECT 	b.BlindID,
 	    			SmallBlind,
 	    			LargeBlind,
 	    			ChipUpID,
-	    			EndOfRebuy
-	    	FROM 	blinds
+	    			EndOfRebuy,
+					(SELECT EXISTS( SELECT * FROM completedblinds cb WHERE cb.BlindID = b.BlindID)) AS Completed
+	    	FROM 	blinds b
 	    	WHERE 	Status > 0
 		';
 
@@ -102,7 +103,9 @@ class Repository
 	{
 		$sql = '
 	    	SELECT 	gp.PlayerID, 
+					gp.GamePlayerID,
 	           		FirstName,
+					LastName,
 	           		(SELECT COUNT(*) FROM GamePlayerBuyin gbp WHERE gbp.GamePlayerID = gp.GamePlayerID) AS BuyinCount
 			FROM 	players AS p 
 			JOIN 	gameplayers AS gp ON gp.PlayerID = p.PlayerID
@@ -191,6 +194,7 @@ class Repository
 			$statement->bindValue(':email', $player['Email']);
 	
 			$statement->execute();
+			$success = $statement->rowCount() === 1;
 			
 			$player['PlayerID'] = $this->database->lastInsertId();
 		}
@@ -207,8 +211,8 @@ class Repository
 	            ';
 	
 		    $statement = $this->database->prepare($sql);
-			$statement->bindValue(':gameID', $player['GameID']);
-			$statement->bindValue(':blind', $player['PlayerID']);
+			$statement->bindValue(':gameid', $player['GameID']);
+			$statement->bindValue(':playerid', $player['PlayerID']);
 	
 			$statement->execute();
 			$success = $statement->rowCount() === 1;
@@ -220,45 +224,131 @@ class Repository
 
 		return array('success' => $success);
 	}
+	
+	function UpsertBuyin($player)
+	{
+        $sql = '
+            INSERT INTO gameplayerbuyin 
+                (GamePlayerID, 
+                IsRebuy)
+            VALUES 
+                (:gpid,
+                :isrebuy)
+            ';
 
-	function GetCurrentTime($game_id)
+	    $statement = $this->database->prepare($sql);
+		$statement->bindValue(':gpid', $player['GamePlayerID']);
+		$statement->bindValue(':isrebuy', $player['IsRebuy']);
+
+		$statement->execute();
+		$success = $statement->rowCount() === 1;
+
+		return array('success' => $success);
+	}
+	
+	function UpsertPlacing($player)
+	{
+        $sql = '
+            INSERT INTO playerplacings 
+                (GamePlayerID, 
+                PlacingID)
+            VALUES 
+                (:gpid,
+                :placingid)
+            ';
+
+	    $statement = $this->database->prepare($sql);
+		$statement->bindValue(':gpid', $player['GamePlayerID']);
+		$placing = GetNextPlacing();
+		$statement->bindValue(':placingid', $placing['PlacingID']);
+
+		$statement->execute();
+		$success = $statement->rowCount() === 1;
+
+		return array('success' => $success);
+	}
+
+	function GetNextPlacing($game)
 	{
 		$sql = '
 			SELECT TOP 1 
-					Minutes, 
-					Seconds
-			FROM 	timervalues
-			WHERE 	GameID = :gameID
+					PlacingID
+			FROM 	placings p
+			WHERE 	p.PlacingID NOT IN (
+				SELECT 	pp.PlacingID 
+				FROM 	playerplacings pp 
+				JOIN	gamePlayers AS gp ON gp.GamePlayerID = pp.GamePlayerID
+				WHERE 	gp.GameID = :gameid)
 			AND 	Status = 1
+			AND NOT LIKE CHOP
 			ORDER BY TimerValueID DESC
-			LIMIT 	1
 		';
 	          
 	    $statement = $this->database->prepare($sql);
-		$statement->bindValue(':gameID', $game_id);
+		$statement->bindValue(':gameid', $game['GameID']);
 		$statement->execute();
+		# TODO: return id only, no array, and call GetNextPlacing directly from bindValue
 		return $statement->fetch(PDO::FETCH_ASSOC);
+	}
+
+	function GetCurrentTime($game)
+	{
+		$sql = '
+			SELECT 	Minutes, 
+					Seconds
+			FROM 	timervalues
+			WHERE 	GameID = :gameid
+			AND 	Status = 1
+			ORDER BY TimerValueID DESC
+			LIMIT	1
+		';
+	          
+	    $statement = $this->database->prepare($sql);
+		$statement->bindValue(':gameid', $game['GameID']);
+		$statement->execute();
+		$success = $statement->fetch(PDO::FETCH_ASSOC);
+		
+		if (!$success || $success == false)
+		{
+			$sql = '
+				SELECT 	Length AS Minutes, 
+						0 AS Seconds
+				FROM 	blindincrement
+				WHERE 	BlindIncrementID = :biid
+				LIMIT	1
+			';
+		          
+		    $statement = $this->database->prepare($sql);
+			$statement->bindValue(':biid', $game['BlindIncrementID']);
+			$statement->execute();
+			$success = $statement->fetch(PDO::FETCH_ASSOC);
+		}
+		else
+		{
+			$game['gameid'] = $game['GameID'];
+			$this->ClearSavedTime($game);
+		}
+		
+		return $success;
 	}
 
 	function UpsertCurrentTime($data)
 	{
-		$sql = '
-			UPDATE	timervalues
-			SET		Status = 0
-			WHERE	Status = 1
+		$this->ClearSavedTime($data);
 			
-			INSERT INTO timervalues (
-				GameID, 
+		$sql = '
+			INSERT INTO timervalues 
+				(GameID, 
 				Minutes, 
 				Seconds)
-			VALUES (
-				:gameid, 
+			VALUES 
+				(:gameid, 
 				:min, 
 				:sec)
 		';
 
 	    $statement = $this->database->prepare($sql);
-		$statement->bindValue(':gameid', $data['game_id']);
+		$statement->bindValue(':gameid', $data['gameid']);
 		$statement->bindValue(':min', $data['min']);
 		$statement->bindValue(':sec', $data['sec']);
 
@@ -268,6 +358,47 @@ class Repository
 	    );
 
 		json_encode($result);
+	}
+
+	function ClearSavedTime($data)
+	{
+		$sql = '
+			UPDATE	timervalues
+			SET		Status = 0
+			WHERE	Status = 1
+			AND		GameID = :gameid
+		';
+
+	    $statement = $this->database->prepare($sql);
+		$statement->bindValue(':gameid', $data['gameid']);
+
+		$result = array(
+            "success" => $statement->execute(),
+            "message" => $statement->errorCode()
+	    );
+
+		json_encode($result);
+	}
+	
+	function UpsertEndBlind($blind)
+	{
+        $sql = '
+            INSERT INTO completedblinds 
+                (BlindID, 
+                GameID)
+            VALUES 
+                (:blindid,
+                :gameid)
+            ';
+
+	    $statement = $this->database->prepare($sql);
+		$statement->bindValue(':blindid', $blind['BlindID']);
+		$statement->bindValue(':gameid', $blind['GameID']);
+
+		$result = array(
+            "success" => $statement->execute(),
+            "message" => $statement->errorCode()
+	    );
 	}
 }
 

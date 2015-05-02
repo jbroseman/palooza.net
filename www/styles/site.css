@@ -17,6 +17,10 @@ body {
     padding: 0;
 }
 
+body.flashing {
+    background: rgba(255, 0, 0, .3);
+}
+
 table, th, td {
     margin: 0;
     padding: 0;
@@ -168,7 +172,6 @@ ul, li {
 }
 
 .players li {
-    font-size: 1.6em;
     line-height: 1.1em;
     position: relative;
     margin: 0 0 5px 0;
@@ -176,23 +179,30 @@ ul, li {
     background: linear-gradient(25deg, rgba(255, 255, 255, 0.3), transparent 45%);
 }
 
-.players li.paidx0 {
-    color: #b7b7b7;
+.players li.paidx0 span {
+    color: rgba(255, 255, 255, .3);
+    text-shadow: none;
 }
 
 .players li span,
-.players li div,
+.players li .rebuy,
 .players li button {
     display: inline-block;
     vertical-align: middle;
 }
 
 .players li span {
+    font-size: 1.6em;
     line-height: 1em;
     width: 35%;
     color: #ffffff;
     text-shadow: 1px 1px 2px #000000;
     padding: 0 0 0 .5em;
+    cursor: pointer;
+}
+
+.players li:hover span {
+    color: #d3ff3d;
 }
 
 .players li div.rebuy {
@@ -201,6 +211,17 @@ ul, li {
 
 .players li div.rebuy img {
     height: .9em;
+}
+
+.player-menu {
+    text-align: center;
+    width: 50%;
+}
+
+.player-menu .button {
+    font-size: 1em;
+    display: block;
+    margin: .5em 1em;
 }
 
 .timer {
@@ -294,8 +315,11 @@ ul, li {
     margin: 5px 0;
 }
 
-.blinds li.end-of-rebuy-1 {
-    border-bottom: 1px solid red;
+.blinds li.end-of-rebuy-1:after {
+    content: 'End of rebuy';
+    font-size: .6em;
+    color: #aeff00;
+    margin-right: 2em;
 }
 
 .blinds li span {
@@ -303,12 +327,16 @@ ul, li {
     padding: 5pt 1em 5pt 1em;
 }
 
-.blinds li:not(.finished):first-of-type span {
+.blinds li.completed-1 {
+    opacity: .6;
+}
+
+.blinds li.active span {
     font-size: 1.2em;
     font-weight: bold;
 }
 
-.blinds li:not(.finished):first-of-type .status {
+.blinds li.active .status {
     position:  absolute;
     top: -5px;
     right: 0;
@@ -354,9 +382,15 @@ form {
     text-align: left;
 }
 
+.form-field span {
+    display: inline-block;
+    text-align: left;
+}
+
 .form-field input,
 .form-field select,
-.form-field textarea {
+.form-field textarea,
+.form-field span {
     width: 60%;
 }
 

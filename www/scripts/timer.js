@@ -1,6 +1,10 @@
 ﻿$(function () {
     var timer = null;
-    loadTimer();
+    var flash = null;
+    setTimer(
+        $('.timer .minutes').text(),
+        $('.timer .seconds').text()
+    );
 
     $('#start_timer').on('click', function () {
         runTimer();
@@ -15,26 +19,8 @@
     $('#clear_timer').on('click', function () {
         var thissound = $("#siren");
         thissound.get(0).pause();
-        loadTimer();
+        clearTimer();
     });
-
-    function loadTimer() {
-        var game = {};
-        game['gameid'] = $('.game').data('id');
-
-        setTimer(0, 5);
-
-        //$.ajax({
-        //    url: "gettimer.php",
-        //    data: game,
-        //    dataType: 'json',
-        //    success: function (data) {
-        //        if (data && data.success) {
-        //            setTimer(data.minutes, data.seconds);
-        //        }
-        //    }
-        //});
-    }
 
     function setTimer(minutes, seconds) {
         minutes = minutes.toString();
@@ -64,7 +50,7 @@
                         currentseconds = 60;
                     }
                     else {
-                        stopTimer();
+                        clearInterval(timer);
                         var thissound = $("#siren");
                         thissound.get(0).play();
                         processEndBlind();
@@ -87,13 +73,71 @@
 
         $.ajax({
             url: "api/stoptimer.php",
-            data: { 'data': time },
+            type: "post",
+            data: JSON.stringify(time),
             dataType: 'json',
-            success: function (data) {
-                if (data && data.message.length) {
-                    $('#result_message').html(data.message);
-                }
+        }).done(function (data) {
+            if (data && data.message.length) {
+                $('#result_message').html(data.message);
             }
+        })
+        .error(function (e) {
+            alert(e.responseText);
+        });
+    }
+
+    function clearTimer() {
+        clearInterval(timer);
+        var data = {};
+        data['gameid'] = $('.game').data('id');
+
+        $.ajax({
+            url: "api/cleartimer.php",
+            type: "post",
+            data: JSON.stringify(data),
+            dataType: 'json',
+        }).done(function (data) {
+            if (data && data.message.length) {
+                $('#result_message').html(data.message);
+            }
+            else {
+                location.reload();
+            }
+        })
+        .error(function (e) {
+            alert(e.responseText);
+        });
+    }
+
+    function processEndBlind() {
+        var $blind = $(".blinds li.completed-0").first();
+        var data = {
+            'GameID': $('.game').data('id'),
+            'BlindID': $blind.data('id')
+        };
+
+        $.ajax({
+            url: "api/upsertcompletedblind.php",
+            type: "post",
+            data: JSON.stringify(data),
+            dataType: 'json',
+        }).done(function (data) {
+            if (data && data.message.length) {
+                $('#result_message').html(data.message);
+            }
+            else {
+                flash = setInterval(function () {
+                    $('body').toggleClass('flashing');
+                }, 200);
+                
+                setTimeout(function() {
+                    clearInterval(flash);
+                    location.reload();
+                }, 5000);
+            }
+        })
+        .error(function (e) {
+            alert(e.responseText);
         });
     }
 });

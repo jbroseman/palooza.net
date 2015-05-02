@@ -3,7 +3,7 @@
 
 	$repo = new Repository();
 	$data = json_decode(file_get_contents('php://input'), true);
-	$result = $repo->UpsertGamePlayer($data);
+	$result = $repo->UpsertBuyin($data);
 	header('HTTP/1.1 200 OK');
 	header('Content-type: application/json');
 	echo json_encode($result);
