@@ -163,7 +163,7 @@ ul, li {
     top: 15%;
     overflow-x: hidden;
     overflow-y: auto;
-    width: 25%;
+    width: 15%;
 }
 
 .players .button {
@@ -213,9 +213,14 @@ ul, li {
     height: .9em;
 }
 
+.players li .placing {
+    float: right;
+    background-color: black;
+    border-radius: .25em;
+}
+
 .player-menu {
     text-align: center;
-    width: 50%;
 }
 
 .player-menu .button {

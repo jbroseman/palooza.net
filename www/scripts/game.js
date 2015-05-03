@@ -74,7 +74,7 @@
 
     $('#Button_Place').on('click', function (e) {
         e.stopImmediatePropagation();
-        upsertPlayerPlacing();
+        upsertPlayerPlacing($(this).closest('li').data('gameplayerid'));
     });
 
     $('#Button_Remove_Player').on('click', function (e) {
@@ -175,13 +175,14 @@
         });
     }
 
-    function upsertPlayerPlacing() {
+    function upsertPlayerPlacing(gameplayerid) {
         var data = {
-            'GamePlayerID': $('#GamePlayerID').val()
+            'GameID': $('.game').data('id'),
+            'GamePlayerID': gameplayerid
         };
 
         $.ajax({
-            url: "api/upsertbuyin.php",
+            url: "api/upsertplayerplacing.php",
             type: "post",
             data: JSON.stringify(data),
             dataType: 'json'

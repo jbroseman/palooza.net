@@ -38,12 +38,17 @@ $timer = $repo->GetCurrentTime($game);
 								<img src='img/1up_chip.png' alt='rebuy chip' />
 							</div>
 						<?php } ?>
+						
+						<div class="placing"><?=$player['Placing']?></div>
+						
 						<div class="player-menu hidden">
 							<div>
 								<h2></h2>
 								<?php if ($player['BuyinCount'] > 0) { ?>
 									<div class="button" id="Button_Rebuy">Rebuy</div>
-									<div class="button" id="Button_Place">Place</div>
+									<?php if (empty($player['Placing'])) { ?>
+										<div class="button" id="Button_Place">Place</div>
+									<?php } ?>
 									<div class="button disabled" title="this feature is under construction" id="Button_Refund">Refund</div>
 								<?php } else { ?>
 									<div class="button" id="Button_Buy_In">Buy In</div>
