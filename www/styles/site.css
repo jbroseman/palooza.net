@@ -194,7 +194,6 @@ ul, li {
 .players li span {
     font-size: 1.6em;
     line-height: 1em;
-    width: 35%;
     color: #ffffff;
     text-shadow: 1px 1px 2px #000000;
     padding: 0 0 0 .5em;
@@ -206,7 +205,6 @@ ul, li {
 }
 
 .players li div.rebuy {
-    margin-left: 15px;
 }
 
 .players li div.rebuy img {
@@ -215,8 +213,6 @@ ul, li {
 
 .players li .placing {
     float: right;
-    background-color: black;
-    border-radius: .25em;
 }
 
 .player-menu {

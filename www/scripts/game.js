@@ -62,22 +62,23 @@
         $(this).closest('.player-menu').addClass('hidden');
     });
 
-    $('#Button_Buy_In').on('click', function (e) {
+    $('.button.buy-in').click(function (e) {
         e.stopImmediatePropagation();
-        upsertPlayerBuyin($(this).closest('li').data('gameplayerid'), false);
+        var playerid = $(this).closest('li').data('gameplayerid');
+        upsertPlayerBuyin(playerid, false);
     });
 
-    $('#Button_Rebuy').on('click', function (e) {
+    $('.button.rebuy').on('click', function (e) {
         e.stopImmediatePropagation();
         upsertPlayerBuyin($(this).closest('li').data('gameplayerid'), true);
     });
 
-    $('#Button_Place').on('click', function (e) {
+    $('.button.place').on('click', function (e) {
         e.stopImmediatePropagation();
         upsertPlayerPlacing($(this).closest('li').data('gameplayerid'));
     });
 
-    $('#Button_Remove_Player').on('click', function (e) {
+    $('.button.remove-player').on('click', function (e) {
         e.stopImmediatePropagation();
         removePlayer();
     });

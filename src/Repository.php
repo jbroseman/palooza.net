@@ -107,7 +107,7 @@ class Repository
 	           		FirstName,
 					LastName,
 	           		(SELECT COUNT(*) FROM GamePlayerBuyin gbp WHERE gbp.GamePlayerID = gp.GamePlayerID) AS BuyinCount,
-					(SELECT pl.Code FROM placings AS pl JOIN playerplacings AS pp ON pp.PlacingID = pl.PlacingID WHERE pp.GamePlayerID = gp.GamePlayerID) AS Placing
+					(SELECT pl.Description FROM placings AS pl JOIN playerplacings AS pp ON pp.PlacingID = pl.PlacingID WHERE pp.GamePlayerID = gp.GamePlayerID) AS Placing
 			FROM 	players AS p 
 			JOIN 	gameplayers AS gp ON gp.PlayerID = p.PlayerID
 			WHERE 	gp.GameID = :gameID

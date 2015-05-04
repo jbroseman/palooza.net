@@ -39,20 +39,20 @@ $timer = $repo->GetCurrentTime($game);
 							</div>
 						<?php } ?>
 						
-						<div class="placing"><?=$player['Placing']?></div>
+						<div class="placing"><?=$player['Placing']?></div><div class="clear"></div>
 						
 						<div class="player-menu hidden">
 							<div>
 								<h2></h2>
 								<?php if ($player['BuyinCount'] > 0) { ?>
-									<div class="button" id="Button_Rebuy">Rebuy</div>
+									<div class="button rebuy">Rebuy</div>
 									<?php if (empty($player['Placing'])) { ?>
-										<div class="button" id="Button_Place">Place</div>
+										<div class="button place">Place</div>
 									<?php } ?>
 									<div class="button disabled" title="this feature is under construction" id="Button_Refund">Refund</div>
 								<?php } else { ?>
-									<div class="button" id="Button_Buy_In">Buy In</div>
-									<div class="button" id="Button_Remove_Player">Remove</div>
+									<div class="button buy-in">Buy In</div>
+									<div class="button remove-player">Remove</div>
 								<?php } ?>
 								<?php if (!empty($game['GameID']) && $game['GameID'] > 0) { ?>
 									<div class="button player-menu-collapse">Close</div>
