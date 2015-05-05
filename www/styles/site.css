@@ -158,6 +158,25 @@ ul, li {
     width: 90%;
 }
 
+.game {
+    position: absolute;
+    width: 40%;
+    left: 30%;
+    bottom: 20%;
+    text-align: center;
+}
+
+.game label {
+    font-size: 1.5em;
+    color: #b7b7b7;
+}
+
+.game span {
+    font-size: 2em;
+    font-weight: bold;
+    margin-left: 1em;
+}
+
 .players {
     position: absolute;
     top: 15%;
@@ -227,7 +246,7 @@ ul, li {
 
 .timer {
     position: absolute;
-    bottom: 25%;
+    top: 30%;
     width: 60%;
     left: 20%;
     color: #d3ff3d;
@@ -253,9 +272,6 @@ ul, li {
     text-align: center;
 }
 
-.timer .control td {
-}
-
 .timer td.first {
     text-align: right;
     width: 45%;
@@ -276,11 +292,11 @@ ul, li {
     width: 40%;
     text-align: center;
     color: #ffffff;
-    bottom: .25em;
+    bottom: .5em;
 }
 
 .chip-values .bevel {
-    padding: 0 1em .5em 1em;
+    padding: .5em 1em .25em 1em;
 }
 
 .chip-values .item {
@@ -316,11 +332,7 @@ ul, li {
     margin: 5px 0;
 }
 
-.blinds li.end-of-rebuy-1:after {
-    content: 'End of rebuy';
-    font-size: .6em;
-    color: #aeff00;
-    margin-right: 2em;
+.blinds li.end-of-rebuy-1 {
 }
 
 .blinds li span {

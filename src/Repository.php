@@ -24,13 +24,16 @@ class Repository
 	public function GetActiveGame()
 	{
 		$sql = '
-	    	SELECT 	GameID,
-	    			Date,
-	    			EndOfRebuy,
-	    			BlindIncrementID,
-	    			BuyInID	
-	    	FROM 	games
-	    	WHERE 	Status = 1
+	    	SELECT 	g.GameID,
+	    			g.Date,
+	    			g.EndOfRebuy,
+	    			g.BlindIncrementID,
+					g.BeginningStack,
+	    			g.BuyInID,
+					bi.Amount AS BuyInAmount
+	    	FROM 	games AS g
+			JOIN	buyins AS bi ON bi.BuyInID = g.BuyInID
+	    	WHERE 	g.Status = 1
 	    	LIMIT 	1
 	    ';
 
@@ -107,7 +110,7 @@ class Repository
 	           		FirstName,
 					LastName,
 	           		(SELECT COUNT(*) FROM GamePlayerBuyin gbp WHERE gbp.GamePlayerID = gp.GamePlayerID) AS BuyinCount,
-					(SELECT pl.Description FROM placings AS pl JOIN playerplacings AS pp ON pp.PlacingID = pl.PlacingID WHERE pp.GamePlayerID = gp.GamePlayerID) AS Placing
+					(SELECT pl.Code FROM placings AS pl JOIN playerplacings AS pp ON pp.PlacingID = pl.PlacingID WHERE pp.GamePlayerID = gp.GamePlayerID) AS Placing
 			FROM 	players AS p 
 			JOIN 	gameplayers AS gp ON gp.PlayerID = p.PlayerID
 			WHERE 	gp.GameID = :gameID

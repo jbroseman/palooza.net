@@ -5,6 +5,11 @@ require_once('../src/Repository.php');
 $repo = new Repository();
 $game = $repo->GetActiveGame();
 $timer = $repo->GetCurrentTime($game);
+$blinds = $repo->GetBlinds();
+$chips = $repo->GetChips();
+$players = $repo->GetPlayers($game['GameID']);
+$buyincount = 0;
+$completedblinds = 0;
 
 ?>
 
@@ -29,11 +34,12 @@ $timer = $repo->GetCurrentTime($game);
 			<div class="players">
 				<div class="button" id="Add_Player">Add</div>
 				<ul>
-				<?php foreach ($repo->GetPlayers($game['GameID']) as $player) { ?>
+				<?php foreach ($players as $player) { ?>
 					<li class='paidx<?=$player['BuyinCount']?>' data-id='<?=$player['PlayerID']?>' data-gameplayerid='<?=$player['GamePlayerID']?>' data-name='<?=$player['FirstName']?> <?=$player['LastName']?>'>
 						<span><?=$player['FirstName']?></span>
-					
+						<?php if ($player['BuyinCount'] > 0) { $buyincount++; } ?>
 						<?php for ($inx = $player['BuyinCount']; $inx > 1; $inx--) { ?>
+							<?php $buyincount++ ?>
 							<div class='rebuy'>
 								<img src='img/1up_chip.png' alt='rebuy chip' />
 							</div>
@@ -64,7 +70,34 @@ $timer = $repo->GetCurrentTime($game);
 				<?php }	?>
 				</ul>
 			</div>
+            <div class="blinds">
+                <ul>
+                <?php foreach ($blinds as $blind) { ?>
+					<?php if ($blind['Completed'] && $blind['Completed'] == true) { $completedblinds++; } ?>
+					<li class="end-of-rebuy-<?=$blind['EndOfRebuy']?> completed-<?=$blind['Completed']?>" data-id="<?=$blind['BlindID']?>"><span><?=$blind['SmallBlind']?>/<?=$blind['LargeBlind']?></span>
+						<div class="status"></div>
+					</li>
+                <?php } ?>
+                </ul>
+            </div> 
+            <div class="chip-values plaque">
+				<div class="bevel">
+					<?php foreach ($chips as $chip) { ?>
+						<div class="item">
+							<img src="img/<?=$chip['ImageFilename']?>" alt="<?=$chip['PrimaryColor']?> chip, <?=$chip['Denomination']?> units" />
+							<span><?=$chip['Denomination']?></span>
+						</div>
+					<?php } ?>
+				</div>
+            </div>
 			<div class="game" data-id="<?=$game['GameID']?>" data-blind="<?=$game['BlindIncrementID']?>" data-buyin="<?=$game['BuyInID']?>">
+				<?php 
+					$bonuschips = $completedblinds * 10000;
+					$totalpot = ($game['BuyInAmount'] * $buyincount);
+					$chipsinplay = (($buyincount * $game['BeginningStack']) + $bonuschips);
+				?>
+				<div class="total-pot"><label>Total Pot</label><span>$<?=number_format($totalpot, 2)?></span></div>
+				<div class="chips-in-play"><label>Chips in play</label><span>$<?=number_format($chipsinplay, 0)?></span></div>
 			</div>
 			<div class="timer">
 				<audio id="siren" src="sounds/siren_noise.wav" controls preload="auto" autobuffer></audio>
@@ -83,25 +116,6 @@ $timer = $repo->GetCurrentTime($game);
 					</tbody>
 				</table>
 			</div>
-            <div class="blinds">
-                <ul>
-                <?php foreach ($repo->GetBlinds() as $blind) { ?>
-					<li class="end-of-rebuy-<?=$blind['EndOfRebuy']?> completed-<?=$blind['Completed']?>" data-id="<?=$blind['BlindID']?>"><span><?=$blind['SmallBlind']?>/<?=$blind['LargeBlind']?></span>
-						<div class="status"></div>
-					</li>
-                <?php } ?>
-                </ul>
-            </div> 
-            <div class="chip-values plaque">
-				<div class="bevel">
-					<?php foreach ($repo->GetChips() as $chip) { ?>
-						<div class="item">
-							<span><?=$chip['Denomination']?></span>
-							<img src="img/<?=$chip['ImageFilename']?>" alt="<?=$chip['PrimaryColor']?> chip, <?=$chip['Denomination']?> units" />
-						</div>
-					<?php } ?>
-				</div>
-            </div>
         </div>
         <footer>
             <div class="content-wrapper">
