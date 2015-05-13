@@ -185,8 +185,22 @@ ul, li {
     width: 15%;
 }
 
-.players .button {
+.players h1 {
+    font-size: 1.6em;
+    font-family: 'arial';
     display: inline-block;
+    padding: 0 5px;
+    margin: 0 .25em 0 .25em;
+}
+
+.players .button {
+    padding: 0;
+    width: 1em;
+    height: 1em;
+    font-size: .7em;
+    line-height: 1em;
+    display: inline-block;
+    vertical-align: top;
     margin: 0 0 .5em .5em;
 }
 

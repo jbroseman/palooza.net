@@ -48,7 +48,7 @@
 
     $('#Button_Cancel_Upsert_Player').on('click', function () {
         $('#Modal_Overlay').addClass('hidden');
-        $('.popup-add-player').addClass('hidden');
+        $('.popup.add-player').addClass('hidden');
     });
 
     $('.players li').on('click', function () {

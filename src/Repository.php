@@ -57,7 +57,7 @@ class Repository
 		return $statement->fetchAll(PDO::FETCH_ASSOC);
 	}
 
-	public function GetBlinds()
+	public function GetBlinds($gameID)
 	{
 		$sql = '
 	    	SELECT 	b.BlindID,
@@ -65,12 +65,14 @@ class Repository
 	    			LargeBlind,
 	    			ChipUpID,
 	    			EndOfRebuy,
-					(SELECT EXISTS( SELECT * FROM completedblinds cb WHERE cb.BlindID = b.BlindID)) AS Completed
+					(SELECT EXISTS( SELECT * FROM completedblinds cb WHERE cb.BlindID = b.BlindID and cb.GameID = :gameid)) AS Completed
 	    	FROM 	blinds b
 	    	WHERE 	Status > 0
 		';
 
-		$statement = $this->database->query($sql);
+		$statement = $this->database->prepare($sql);
+		$statement->bindValue(':gameid', $gameID);
+		$statement->execute();
 		return $statement->fetchAll(PDO::FETCH_ASSOC);		
 	}
 

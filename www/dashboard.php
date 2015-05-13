@@ -5,7 +5,7 @@ require_once('../src/Repository.php');
 $repo = new Repository();
 $game = $repo->GetActiveGame();
 $timer = $repo->GetCurrentTime($game);
-$blinds = $repo->GetBlinds();
+$blinds = $repo->GetBlinds($game['GameID']);
 $chips = $repo->GetChips();
 $players = $repo->GetPlayers($game['GameID']);
 $buyincount = 0;
@@ -32,7 +32,9 @@ $completedblinds = 0;
         </div>
         <div id="body">
 			<div class="players">
-				<div class="button" id="Add_Player">Add</div>
+				<h1>Players</h1>
+				<div class="button" id="Add_Player">+</div>
+				<div class="button" id="Add_Players">+<sup>+</sup></div>
 				<ul>
 				<?php foreach ($players as $player) { ?>
 					<li class='paidx<?=$player['BuyinCount']?>' data-id='<?=$player['PlayerID']?>' data-gameplayerid='<?=$player['GamePlayerID']?>' data-name='<?=$player['FirstName']?> <?=$player['LastName']?>'>
