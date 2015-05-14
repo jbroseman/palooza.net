@@ -21,6 +21,7 @@ $completedblinds = 0;
 		<script type="text/javascript" src="scripts/jquery-2.1.3.js"></script>
 		<script type="text/javascript" src="scripts/jquery-ui.min.js"></script>
 		<script type="text/javascript" src="scripts/game.js"></script>
+		<script type="text/javascript" src="scripts/players.js"></script>
 		<script type="text/javascript" src="scripts/timer.js"></script>
     </head>
     <body>
