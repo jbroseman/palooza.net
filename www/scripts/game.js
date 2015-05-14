@@ -42,13 +42,28 @@
         $('.popup.add-player').removeClass('hidden');
     });
 
+    $('#Add_Players').on('click', function () {
+        $('#Modal_Overlay').removeClass('hidden');
+        $('.popup').addClass('hidden');
+        $('.popup.add-players').removeClass('hidden');
+    });
+
     $('#Button_Upsert_Player').on('click', function () {
         upsertGamePlayer();
+    });
+
+    $('#Button_Upsert_Players').on('click', function () {
+        upsertGamePlayers();
     });
 
     $('#Button_Cancel_Upsert_Player').on('click', function () {
         $('#Modal_Overlay').addClass('hidden');
         $('.popup.add-player').addClass('hidden');
+    });
+
+    $('#Button_Cancel_Upsert_Players').on('click', function () {
+        $('#Modal_Overlay').addClass('hidden');
+        $('.popup.add-players').addClass('hidden');
     });
 
     $('.players li').on('click', function () {
@@ -111,6 +126,15 @@
         })
         .error(function (e) {
             alert(e.responseText);
+        });
+    }
+    
+    function upsertGamePlayers() {
+        $("#Upsert_Players li").each(function () {
+            if ($(this).find('input').is(':checked')) {
+                $('#PlayerID').val($(this).data('id'));
+                upsertGamePlayer();
+            }
         });
     }
 

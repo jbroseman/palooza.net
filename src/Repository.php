@@ -124,18 +124,20 @@ class Repository
 		return $statement->fetchAll(PDO::FETCH_ASSOC);
 	}
     
-	function GetAvailablePlayers($gameID)
+	function GetAvailablePlayers($gameID, $sortCol = 'FirstName')
 	{
 	    $sql = '
 	        SELECT  PlayerID, 
 	                FirstName,
 	                LastName
 	        FROM    players
-	        WHERE   PlayerID NOT IN (SELECT PlayerID FROM gameplayers WHERE GameID = :gameID)
+	        WHERE   PlayerID NOT IN (SELECT PlayerID FROM gameplayers WHERE GameID = :gameid)
+			ORDER BY :sort
 	    ';
 	          
 	    $statement = $this->database->prepare($sql);
-		$statement->bindValue(':gameID', $gameID);
+		$statement->bindValue(':gameid', $gameID);
+		$statement->bindValue(':sort', $sortCol);
 		$statement->execute();
 		return $statement->fetchAll(PDO::FETCH_ASSOC);
 	}
