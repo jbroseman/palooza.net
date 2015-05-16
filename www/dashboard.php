@@ -47,5 +47,6 @@ $completedblinds = 0;
 		<?php include ('popup-new-game.php'); ?>
 		<?php include ('popup-add-player.php'); ?>
 		<?php include ('popup-add-players.php'); ?>
+		<?php include ('popup-set-payouts.php'); ?>
     </body>
 </html>
