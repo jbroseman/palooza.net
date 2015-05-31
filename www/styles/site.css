@@ -180,8 +180,6 @@ ul, li {
 .players {
     position: absolute;
     top: 15%;
-    overflow-x: hidden;
-    overflow-y: auto;
     width: 15%;
 }
 
@@ -194,7 +192,8 @@ ul, li {
 }
 
 .players #Add_Player,
-.players #Add_Players {
+.players #Add_Players,
+#Configure_Payouts {
     padding: 0;
     width: 1.5em;
     height: 1.5em;
@@ -203,6 +202,10 @@ ul, li {
     display: inline-block;
     vertical-align: middle;
     margin: 0 0 .5em .5em;
+}
+
+#Configure_Payouts {
+    margin: 0 .5em .2em 0;
 }
 
 .players li {
@@ -348,10 +351,11 @@ ul, li {
 }
 
 .blinds li.end-of-rebuy-1 {
+    
 }
 
 .blinds li span {
-    display: block;
+    display: inline-block;
     padding: 5pt 1em 5pt 1em;
 }
 
@@ -455,6 +459,7 @@ form {
     margin-top: 1em;
     text-align: left;
     display: inline-block;
+    width: 60%;
 }
 
 .popup.add-players li input {

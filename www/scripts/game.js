@@ -7,6 +7,18 @@
     
     $(".blinds li.completed-0").first().addClass('active');
     
+    $(document).keypress(function(e) {
+        if(e.which == 13) {
+            e.stopImmediatePropagation();
+            $(".popup").each(function() {
+                if (!$(this).hasClass('hidden')) {
+                    $(this).find('.submit').click();
+                    return false;
+                }
+            });
+        }
+    });
+    
     $('#Menu_Expand').on('click', function () {
         $('#Modal_Overlay').removeClass('hidden');
         $('.popup.main-menu').removeClass('hidden');
@@ -31,9 +43,9 @@
         upsertGame();
     });
 
-    $('#Button_Cancel_Upsert_Game').on('click', function () {
+    $('.button.cancel').on('click', function () {
         $('#Modal_Overlay').addClass('hidden');
-        $('.popup.new-game').addClass('hidden');
+        $(this).closest('.popup').addClass('hidden');
     });
     
     $('#Configure_Payouts').on('click', function () {
@@ -43,11 +55,6 @@
 
     $('#Button_Upsert_Payouts').on('click', function () {
         upsertPayouts();
-    });
-
-    $('.button.close-popup').on('click', function () {
-        $('#Modal_Overlay').addClass('hidden');
-        $('.popup').addClass('hidden');
     });
 
     function upsertGame() {
