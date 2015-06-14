@@ -6,7 +6,7 @@
 				<tr class="display">
 					<td class="first"><span class="minutes"><?=$timer['Minutes']?></span></td>
 					<td><span class="separator">:</span></td>
-					<td class="last"><span class="seconds">00</span></td>
+					<td class="last"><span class="seconds"><?=$timer['Seconds']?></span></td>
 				</tr>
 				<tr class="control">
 					<td class="first"><div class='button' id="start_timer">Start</div></td>

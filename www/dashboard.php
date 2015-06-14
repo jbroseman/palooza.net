@@ -20,9 +20,9 @@ $completedblinds = 0;
         <link rel="stylesheet" href="styles/site.css" type="text/css" />
 		<script type="text/javascript" src="scripts/jquery-2.1.3.js"></script>
 		<script type="text/javascript" src="scripts/jquery-ui.min.js"></script>
+		<script type="text/javascript" src="scripts/timer.js"></script>
 		<script type="text/javascript" src="scripts/game.js"></script>
 		<script type="text/javascript" src="scripts/players.js"></script>
-		<script type="text/javascript" src="scripts/timer.js"></script>
     </head>
     <body>
         <div class="header plaque">

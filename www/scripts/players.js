@@ -108,6 +108,7 @@
                 else {
                     $('#modal_overlay').addClass('hidden');
                     $('.popup-add-player').addClass('hidden');
+                    stopTimer();
                     location.reload();
                 }
             }
@@ -137,6 +138,7 @@
                 else {
                     $('#modal_overlay').addClass('hidden');
                     $('.popup player-menu').addClass('hidden');
+                    stopTimer();
                     location.reload();
                 }
             }
@@ -166,6 +168,7 @@
                 else {
                     $('#modal_overlay').addClass('hidden');
                     $('.popup player-menu').addClass('hidden');
+                    stopTimer();
                     location.reload();
                 }
             }
@@ -173,5 +176,9 @@
         .error(function (e) {
             alert(e.responseText);
         });
+    }
+
+    function stopTimer() {
+        $('#stop_timer').click();
     }
 });
