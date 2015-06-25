@@ -33,8 +33,8 @@
 			</ul>
 			<?php } ?>
 			<div class="button-wrapper">
-				<div id="Button_Upsert_Players" class="button">Submit</div>
-				<div id="Button_Cancel_Upsert_Players" class="button">Cancel</div>
+				<div id="Button_Cancel_Upsert_Players" class="button cancel">Cancel</div>
+				<div id="Button_Upsert_Players" class="button submit">Submit</div>
 			</div>
 		</form>
 	</div>

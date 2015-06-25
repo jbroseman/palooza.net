@@ -1,8 +1,8 @@
 <div class="popup set-payouts plaque hidden">
 	<div class="bevel">
 		<?php
-			$p = $buyincount * $game['BuyIn'];	#pot current value
-			$b = $game['BuyIn'];				#buyin
+			$p = $buyincount * $game['BuyInAmount'];	#pot current value
+			$b = $game['BuyInAmount'];				#buyin
 			$n = count($players);				#number players
 			$w = ((integer) ($n/6)) + 1;		#winners count
 			
@@ -27,7 +27,7 @@
 			$suggwinnings[1] = $p;
 		?>
 		<input type="hidden" id="Suggested-Payouts" val="<?=json_encode($suggwinnings)?>" />
-		<table class="ui-grid suggested-payout">
+		<table class="ui-grid suggested-payout hidden">
 			<thead><tr><th>Place</th><th> Winnings</th></tr></thead>
 			<tbody>
 				<?php foreach (ksort($winnings) as $place=>$prize) { ?>
@@ -40,7 +40,7 @@
 			<div class="button" id="Button_Custom_Payout">Custom</div>
 			<div class="button" id="Button_Accept_Suggested_Payout">Accept</div>
 		</div>
-		<form class="custom-payout hidden">
+		<form class="custom-payout">
 			<span class="pot-total">$<?=$p?></span>
 			<div class="form-field">
 				<label>Place</label>

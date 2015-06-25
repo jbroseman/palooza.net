@@ -44,8 +44,8 @@
 				<input id="Email" name="Email" type="text" value="" />
 			</div>
 			<div class="button-wrapper">
-				<div id="Button_Upsert_Player" class="button">Submit</div>
-				<div id="Button_Cancel_Upsert_Player" class="button">Cancel</div>
+				<div id="Button_Cancel_Upsert_Player" class="button cancel">Cancel</div>
+				<div id="Button_Upsert_Player" class="button submit">Submit</div>
 			</div>
 		</form>
 	</div>
