@@ -1,6 +1,7 @@
 ﻿$(function () {
     var timer = null;
     var flash = null;
+    
     setTimer(
         $('.timer .minutes').text(),
         $('.timer .seconds').text()

@@ -58,8 +58,8 @@
 				<input type="text" name="BeginningStack" id="BeginningStack" />
 			</div>
 			<div class="button-wrapper">
-				<div id="Button_Upsert_Game" class="button">Submit</div>
-				<div id="Button_Cancel_Upsert_Game" class="button">Cancel</div>
+				<div id="Button_Cancel_Upsert_Game" class="button cancel">Cancel</div>
+				<div id="Button_Upsert_Game" class="button submit">Submit</div>
 			</div>
 		</form>
 	</div>

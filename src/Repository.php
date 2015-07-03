@@ -13,6 +13,7 @@ class Repository
 	{
 		$this->database = new PDO(
 			'mysql:host=localhost;dbname=homegame;charset=utf8',
+			//'mysql:host=localhost;dbname=homegame-test;charset=utf8',
 			'root',		// user
 			''			// password
 		);
