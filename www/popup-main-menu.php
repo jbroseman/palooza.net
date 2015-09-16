@@ -3,7 +3,7 @@
 		<?php if (empty($game['GameID']) || $game['GameID'] == 0) { ?>
 			<div class="button" id="New_Game">New Game</div>
 		<?php } else { ?>
-			<div class="button disabled" title="Game Running" id="New_Game">New Game</div>
+			<div class="button" title="End running game and start new" id="New_Game">New Game</div>
 		<?php } ?>
 		<div class="button disabled" title="this feature is under construction" id="Stats">Statistics</div>
 		<?php if (!empty($game['GameID']) && $game['GameID'] > 0) { ?>
