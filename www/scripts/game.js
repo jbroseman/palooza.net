@@ -29,7 +29,13 @@
         $('.popup.main-menu').addClass('hidden');
     });
     
-    $('#New_Game').on('click', newGame);
+    $('#New_Game').on('click', function () {
+        $('#Modal_Overlay').removeClass('hidden');
+        $('.popup').addClass('hidden');
+        $('.popup.new-game').removeClass('hidden');
+    });
+    
+    $('#Close_Game').on('click', closeGame);
 
     $('#Button_Upsert_Game').on('click', function () {
         upsertGame();
@@ -49,15 +55,15 @@
         upsertPayouts();
     });
     
-    function newGame() {
+    function closeGame() {
         $.ajax({
-            url: "api/newgame.php",
+            url: "api/closegame.php",
             type: "post",
             contentType: 'application/json'
         }).done(function (data) {
             if (data)
             {
-                if (data.message) {
+                if (data.message && data.message != "000000") {
                     $('#result_message').html(data.message);
                     $('#modal_overlay').addClass('hidden');
                     $('.popup.main-menu').addClass('hidden');

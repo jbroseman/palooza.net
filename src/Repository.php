@@ -22,7 +22,7 @@ class Repository
 		$this->database->setAttribute(PDO::ATTR_EMULATE_PREPARES, FALSE);
 	}
 
-	public function StartNewGame()
+	public function CloseGame()
 	{
 		$sql = '
 	    	UPDATE 	games
@@ -166,6 +166,10 @@ class Repository
 	    if (empty($game['GameID']))
 	    {
 	        $sql = '
+				UPDATE 	games
+				SET Status = 0
+				WHERE 	Status = 1
+				
 	            INSERT INTO games 
 	                (Date, 
 	                BlindIncrementID, 
