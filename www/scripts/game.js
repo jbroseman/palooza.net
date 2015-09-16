@@ -29,15 +29,7 @@
         $('.popup.main-menu').addClass('hidden');
     });
     
-    $('#New_Game').on('click', function () {
-        if ($(this).hasClass('disabled'))
-        {
-            return false;
-        }
-        $('#Modal_Overlay').removeClass('hidden');
-        $('.popup').addClass('hidden');
-        $('.popup.new-game').removeClass('hidden');
-    });
+    $('#New_Game').on('click', newGame);
 
     $('#Button_Upsert_Game').on('click', function () {
         upsertGame();
@@ -56,6 +48,31 @@
     $('#Button_Upsert_Payouts').on('click', function () {
         upsertPayouts();
     });
+    
+    function newGame() {
+        $.ajax({
+            url: "api/newgame.php",
+            type: "post",
+            contentType: 'application/json'
+        }).done(function (data) {
+            if (data)
+            {
+                if (data.message) {
+                    $('#result_message').html(data.message);
+                    $('#modal_overlay').addClass('hidden');
+                    $('.popup.main-menu').addClass('hidden');
+                }
+                else {
+                    $('#modal_overlay').addClass('hidden');
+                    $('.popup.main-menu').addClass('hidden');
+                    location.reload();
+                }
+            }
+        })
+        .error(function (e) {
+            alert(e.responseText);
+        });
+    }
 
     function upsertGame() {
         var data = {

@@ -17,9 +17,26 @@ class Repository
 			'root',		// user
 			''			// password
 		);
+	    $statement = $this->database->prepare($sql);
 
 		$this->database->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 		$this->database->setAttribute(PDO::ATTR_EMULATE_PREPARES, FALSE);
+	}
+
+	public function StartNewGame()
+	{
+		$sql = '
+	    	UPDATE 	games
+			SET Status = 0
+	    	WHERE 	Status = 1
+	    ';
+
+		$result = array(
+            "success" => $statement->execute(),
+            "message" => $statement->errorCode()
+	    );
+
+		json_encode($result);
 	}
 
 	public function GetActiveGame()
