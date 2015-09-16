@@ -36,7 +36,7 @@ class Repository
             "message" => $statement->errorCode()
 	    );
 
-		json_encode($result);
+		return json_encode($result);
 	}
 
 	public function GetActiveGame()
