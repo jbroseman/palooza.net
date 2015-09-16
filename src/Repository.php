@@ -17,7 +17,6 @@ class Repository
 			'root',		// user
 			''			// password
 		);
-	    $statement = $this->database->prepare($sql);
 
 		$this->database->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 		$this->database->setAttribute(PDO::ATTR_EMULATE_PREPARES, FALSE);
@@ -30,6 +29,7 @@ class Repository
 			SET Status = 0
 	    	WHERE 	Status = 1
 	    ';
+	    $statement = $this->database->prepare($sql);
 
 		$result = array(
             "success" => $statement->execute(),
