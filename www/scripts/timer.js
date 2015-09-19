@@ -2,6 +2,20 @@
     var timer = null;
     var flash = null;
     
+    $('#add_time').click(function() {
+        stopTimer();
+        var mins = parseInt($('.timer .minutes').text()) + 1;
+        var secs = parseInt($('.timer .seconds').text());
+        setTimer(mins, secs);
+    });
+    
+    $('#remove_time').click(function() {
+        stopTimer();
+        var mins = parseInt($('.timer .minutes').text()) - 1;
+        var secs = parseInt($('.timer .seconds').text());
+        setTimer(mins, secs);
+    });
+    
     setTimer(
         $('.timer .minutes').text(),
         $('.timer .seconds').text()
@@ -34,15 +48,16 @@
         }
         $('.timer .minutes').text(minutes);
         $('.timer .seconds').text(seconds);
+        $('.timer').removeClass('hidden');
     }
 
     function runTimer() {
         var currentminutes = $('.timer .minutes').text();
         var currentseconds = $('.timer .seconds').text();
-
+        
         //if there are values
         if (currentminutes && currentseconds) {
-            //set a one second interval to run the timer
+                //set a one second interval to run the timer
             timer = setInterval(function () {
                 //check to see
                 if (currentseconds == 0) {
@@ -58,7 +73,7 @@
                         return;
                     }
                 }
-
+    
                 currentseconds--;
                 setTimer(currentminutes, currentseconds);
             }, 1000);

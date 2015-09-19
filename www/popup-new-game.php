@@ -57,6 +57,14 @@
 				<label for="BeginningStack">Beginning Stack</label>
 				<input type="text" name="BeginningStack" id="BeginningStack" />
 			</div>
+			<div class="form-field">
+				<label for="BumpCost">Boost Cost</label>
+				<input type="text" name="BumpCost" id="BumpCost" />
+			</div>
+			<div class="form-field">
+				<label for="BumpStack">Boost Stack</label>
+				<input type="text" name="BumpStack" id="BumpStack" />
+			</div>
 			<div class="button-wrapper">
 				<div id="Button_Cancel_Upsert_Game" class="button cancel">Cancel</div>
 				<div id="Button_Upsert_Game" class="button submit">Submit</div>

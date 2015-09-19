@@ -47,7 +47,10 @@ class Repository
 	    			g.EndOfRebuy,
 	    			g.BlindIncrementID,
 					g.BeginningStack,
+					g.BumpCost,
+					g.BumpStack,
 	    			g.BuyInID,
+					(SELECT COUNT(GamePlayerID) FROM GamePlayers WHERE GameID = g.GameID) AS PlayerCount,
 					bi.Amount AS BuyInAmount
 	    	FROM 	games AS g
 			JOIN	buyins AS bi ON bi.BuyInID = g.BuyInID
@@ -82,6 +85,7 @@ class Repository
 	    			SmallBlind,
 	    			LargeBlind,
 	    			ChipUpID,
+					(SELECT ImageFilename FROM chips WHERE ChipID = ChipUpID) AS ChipUpIMG,
 	    			EndOfRebuy,
 					(SELECT EXISTS( SELECT * FROM completedblinds cb WHERE cb.BlindID = b.BlindID and cb.GameID = :gameid)) AS Completed
 	    	FROM 	blinds b
@@ -129,7 +133,8 @@ class Repository
 					gp.GamePlayerID,
 	           		FirstName,
 					LastName,
-	           		(SELECT COUNT(*) FROM GamePlayerBuyin gbp WHERE gbp.GamePlayerID = gp.GamePlayerID) AS BuyinCount,
+	           		(SELECT COUNT(GamePlayerBuyinID) FROM GamePlayerBuyin WHERE IsBoost = 1 AND GamePlayerID = gp.GamePlayerID) AS Boosted,
+	           		(SELECT COUNT(GamePlayerBuyinID) FROM GamePlayerBuyin WHERE GamePlayerID = gp.GamePlayerID AND IsBoost = 0) AS BuyinCount,
 					(SELECT pl.Code FROM placings AS pl JOIN playerplacings AS pp ON pp.PlacingID = pl.PlacingID WHERE pp.GamePlayerID = gp.GamePlayerID) AS Placing
 			FROM 	players AS p 
 			JOIN 	gameplayers AS gp ON gp.PlayerID = p.PlayerID
@@ -169,17 +174,26 @@ class Repository
 				UPDATE 	games
 				SET Status = 0
 				WHERE 	Status = 1
+				';
 				
+			$statement = $this->database->prepare($sql);
+			$statement->execute();
+				
+			$sql = '				
 	            INSERT INTO games 
 	                (Date, 
 	                BlindIncrementID, 
 	                BuyInID, 
-	                BeginningStack)
+	                BeginningStack,
+					BumpCost,
+					BumpStack)
 	            VALUES 
 	                (:date,
 	                :blind,
 	                :buyin,
-	                :stack)
+	                :stack,
+					:bumpcost,
+					:bumpstack)
 	            ';
 		}
 	    else
@@ -192,6 +206,8 @@ class Repository
 		$statement->bindValue(':blind', $game['BlindIncrementID']);
 		$statement->bindValue(':buyin', $game['BuyInID']);
 		$statement->bindValue(':stack', $game['BeginningStack']);
+		$statement->bindValue(':bumpcost', $game['BumpCost']);
+		$statement->bindValue(':bumpstack', $game['BumpStack']);
 
 		$statement->execute();
 		$success = $statement->rowCount() === 1;
@@ -260,15 +276,18 @@ class Repository
         $sql = '
             INSERT INTO gameplayerbuyin 
                 (GamePlayerID, 
-                IsRebuy)
+                IsRebuy,
+				IsBoost)
             VALUES 
                 (:gpid,
-                :isrebuy)
+                :isrebuy,
+				:isboost)
             ';
 
 	    $statement = $this->database->prepare($sql);
 		$statement->bindValue(':gpid', $player['GamePlayerID']);
 		$statement->bindValue(':isrebuy', $player['IsRebuy']);
+		$statement->bindValue(':isboost', $player['IsBoost']);
 
 		$statement->execute();
 		$success = $statement->rowCount() === 1;

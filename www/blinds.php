@@ -9,6 +9,11 @@
 					<?php } ?>
 					<span><?=$blind['SmallBlind']?>/<?=$blind['LargeBlind']?></span>
 					<div class="status"></div>
+					<?php if (!empty($blind['ChipUpID']) && $blind['Completed'] == false) { ?>
+						<div class="chip-up chip-up-<?=$blind['ChipUpID']?>">
+							BREAK 15 min! Chip up <img src="img/<?=$blind['ChipUpIMG']?>" />
+						</div>
+					<?php } ?>
 				</li>
 		    <?php } ?>
 	    </ul>

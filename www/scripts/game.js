@@ -85,7 +85,9 @@
             'Date': $('#Date').val(),
             'BlindIncrementID': $('#BlindIncrementID').val(),
             'BuyInID': $('#BuyinID').val(),
-            'BeginningStack': $('#BeginningStack').val()
+            'BeginningStack': $('#BeginningStack').val(),
+            'BumpCost': $('#BumpCost').val(),
+            'BumpStack': $('#BumpStack').val()
         };
 
         $.ajax({

@@ -57,12 +57,17 @@
     $('.button.buy-in').click(function (e) {
         e.stopImmediatePropagation();
         var playerid = $(this).closest('li').data('gameplayerid');
-        upsertPlayerBuyin(playerid, false);
+        upsertPlayerBuyin(playerid, false, false);
     });
 
     $('.button.rebuy').on('click', function (e) {
         e.stopImmediatePropagation();
-        upsertPlayerBuyin($(this).closest('li').data('gameplayerid'), true);
+        upsertPlayerBuyin($(this).closest('li').data('gameplayerid'), true, false);
+    });
+
+    $('.button.boost').on('click', function (e) {
+        e.stopImmediatePropagation();
+        upsertPlayerBuyin($(this).closest('li').data('gameplayerid'), false, true);
     });
 
     $('.button.place').on('click', function (e) {
@@ -118,10 +123,11 @@
         });
     }
 
-    function upsertPlayerBuyin(gpid, isrebuy) {
+    function upsertPlayerBuyin(gpid, isrebuy, isboost) {
         var data = {
             'GamePlayerID': gpid,
-            'IsRebuy': isrebuy
+            'IsRebuy': isrebuy,
+            'IsBoost': isboost
         };
 
         $.ajax({

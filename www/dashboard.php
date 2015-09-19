@@ -9,6 +9,7 @@ $blinds = $repo->GetBlinds($game['GameID']);
 $chips = $repo->GetChips();
 $players = $repo->GetPlayers($game['GameID']);
 $buyincount = 0;
+$bumpcount = 0;
 $completedblinds = 0;
 
 ?>
