@@ -323,8 +323,8 @@ ul, li {
 
 .chip-values {
     position: absolute;
-    left: 30%;
-    width: 40%;
+    left: 25%;
+    width: 50%;
     text-align: center;
     color: #ffffff;
     bottom: .5em;
