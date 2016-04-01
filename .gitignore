@@ -1,0 +1,13 @@
+# git ignore file
+
+**/packages
+**/*.suo
+**/*.sln.cache
+**/*.user
+**/bin
+**/obj
+**/ci
+**/CharlesRiverIntegration/*.xml
+**/node_modules
+**/bower_components
+.vs/
