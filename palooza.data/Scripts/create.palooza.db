@@ -1,0 +1,64 @@
+USE palooza
+GO
+
+PRINT 'Creating Table Chip'
+GO
+
+IF EXISTS (SELECT * FROM sysobjects WHERE name = 'Chip' AND xtype = 'U')
+BEGIN
+	PRINT 'Table found; dropping and recreating.'
+	DROP TABLE Chip
+END
+GO
+
+CREATE TABLE Chip
+(
+	ID int NOT NULL PRIMARY KEY,
+	Value int NOT NULL,
+	Color varchar(32),
+	TrimColor varchar(32),
+	[Image] Image
+)
+GO
+
+PRINT 'Creating Table Blind'
+GO
+
+PRINT 'Creating Table Boost'
+GO
+
+PRINT 'Creating Table BoostType'
+GO
+
+PRINT 'Creating Table Buyin'
+GO
+
+PRINT 'Creating Table ChipStack'
+GO
+
+PRINT 'Creating Table Game'
+GO
+
+PRINT 'Creating Table GameBlind'
+GO
+
+PRINT 'Creating Table GamePlayer'
+GO
+
+PRINT 'Creating Table GameTable'
+GO
+
+PRINT 'Creating Table Payout'
+GO
+
+PRINT 'Creating Table Player'
+GO
+
+PRINT 'Creating Table Pool'
+GO
+
+PRINT 'Creating Table Seat'
+GO
+
+PRINT 'Creating Table Table'
+GO
