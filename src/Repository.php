@@ -397,30 +397,64 @@ class Repository
 
 	function UpsertCurrentTime($data)
 	{
-		$this->ClearSavedTime($data);
-			
 		$sql = '
-			INSERT INTO timervalues 
-				(GameID, 
-				Minutes, 
-				Seconds)
-			VALUES 
-				(:gameid, 
-				:min, 
-				:sec)
+			SELECT 	*
+			FROM 	timervalues
+			WHERE 	GameID = :gameid
 		';
-
+	          
 	    $statement = $this->database->prepare($sql);
 		$statement->bindValue(':gameid', $data['gameid']);
-		$statement->bindValue(':min', $data['min']);
-		$statement->bindValue(':sec', $data['sec']);
+		$statement->execute();
+		$success = $statement->fetch(PDO::FETCH_ASSOC);
+		
+		$sql = '';
+		
+		if ($success && $success == true)
+		{
+			$sql = '
+				UPDATE timervalues 
+				SET Minutes = :min, Seconds = :sec, Status = 1
+				AND		GameID = :gameid
+			';
+			
+			$statement = $this->database->prepare($sql);
+			$statement->bindValue(':gameid', $data['gameid']);
+			$statement->bindValue(':min', $data['min']);
+			$statement->bindValue(':sec', $data['sec']);
 
-		$result = array(
-            "success" => $statement->execute(),
-            "message" => $statement->errorCode()
-	    );
+			$result = array(
+				"success" => $statement->execute(),
+				"message" => $statement->errorCode()
+			);
 
-		json_encode($result);
+			json_encode($result);
+		}
+		else
+		{
+			$sql = '
+				INSERT INTO timervalues 
+					(GameID, 
+					Minutes, 
+					Seconds)
+				VALUES 
+					(:gameid, 
+					:min, 
+					:sec)
+			';
+			
+			$statement = $this->database->prepare($sql);
+			$statement->bindValue(':gameid', $data['gameid']);
+			$statement->bindValue(':min', $data['min']);
+			$statement->bindValue(':sec', $data['sec']);
+
+			$result = array(
+				"success" => $statement->execute(),
+				"message" => $statement->errorCode()
+			);
+
+			json_encode($result);
+		}
 	}
 
 	function ClearSavedTime($data)
