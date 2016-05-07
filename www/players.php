@@ -1,8 +1,7 @@
 <?php if ($game['GameID'] > 0) { ?>
 	<div class="players">
-		<h1>Players</h1>
-		<div class="button" title="Add player" id="Add_Player">+</div>
-		<div class="button" title="Add a few players" id="Add_Players">+<sup>+</sup></div>
+		<div class="button" title="Add player" id="Add_Player">Add New</div>
+		<div class="button" title="Add a few players" id="Add_Players">Add Multi</div>
 		<ul>
 			<?php foreach ($players as $player) { ?>
 				<li class='paidx<?=$player['BuyinCount']?> boosted-<?=$player['Boosted']?>' data-id='<?=$player['PlayerID']?>' data-gameplayerid='<?=$player['GamePlayerID']?>' data-name='<?=$player['FirstName']?> <?=$player['LastName']?>'>

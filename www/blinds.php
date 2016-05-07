@@ -7,13 +7,11 @@
 					<?php if ($blind['EndOfRebuy'] == 1 && $blind['Completed'] == 1) { ?>
 						<div class="button" title="Configure payouts" id="Configure_Payouts">$</div>
 					<?php } ?>
+					<?php if (!empty($blind['ChipUpID']) && $blind['Completed'] == false) { ?>
+						<img class="chip-up chip-up-<?=$blind['ChipUpID']?>" src="img/<?=$blind['ChipUpIMG']?>" />
+					<?php } ?>
 					<span><?=$blind['SmallBlind']?>/<?=$blind['LargeBlind']?></span>
 					<div class="status"></div>
-					<?php if (!empty($blind['ChipUpID']) && $blind['Completed'] == false) { ?>
-						<div class="chip-up chip-up-<?=$blind['ChipUpID']?>">
-							BREAK 15 min! Chip up <img src="img/<?=$blind['ChipUpIMG']?>" />
-						</div>
-					<?php } ?>
 				</li>
 		    <?php } ?>
 	    </ul>
