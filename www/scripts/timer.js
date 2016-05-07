@@ -149,7 +149,7 @@
                 setTimeout(function() {
                     clearInterval(flash);
                     location.reload();
-                }, 5000);
+                }, 60000);
             }
         })
         .error(function (e) {

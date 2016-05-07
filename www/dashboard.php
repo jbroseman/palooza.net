@@ -8,6 +8,12 @@ $timer = $repo->GetCurrentTime($game);
 $blinds = $repo->GetBlinds($game['GameID']);
 $chips = $repo->GetChips();
 $players = $repo->GetPlayers($game['GameID']);
+$activeplayercount = 0;
+foreach ($players as $player) {
+	if (!isset($player['Placing'])) {
+		$activeplayercount ++;
+	}
+}
 $buyincount = 0;
 $bumpcount = 0;
 $completedblinds = 0;

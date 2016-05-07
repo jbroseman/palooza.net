@@ -1,15 +1,15 @@
 ﻿html {
     background-color: #2a2a2a;
-    background-image: url('../img/carbon_fiber_texture.png');
-    background-size: 40px;
-    background-repeat: repeat;
+    background-image: url('../img/honeycomb.jpg');
+    background-size: 100%;
+    background-repeat: no-repeat;
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
 
 body {
-    background: radial-gradient(transparent, #000000);
+    background: radial-gradient(rgba(0, 0, 0, .5), #000000);
     color: #fff;
     font-size: 100%;
     font-family: "Segoe UI", Verdana, Helvetica, Sans-Serif;
@@ -164,6 +164,7 @@ ul, li {
     left: 30%;
     bottom: 20%;
     text-align: center;
+    text-shadow: 1px 1px 20px #000000;
 }
 
 .game label {
@@ -274,7 +275,7 @@ ul, li {
     width: 40%;
     left: 32%;
     color: #d3ff3d;
-    text-shadow: 1px 1px 5px #ebff3d;
+    text-shadow: 1px 1px 30px #000000;
     text-align: center;
 }
 

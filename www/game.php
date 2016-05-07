@@ -4,8 +4,9 @@
 			$bonuschips = $completedblinds * 10000 * round($game['PlayerCount'] / 9);
 			$totalpot = (($game['BuyInAmount'] * $buyincount) + ($game['BumpCost'] * $bumpcount));
 			$chipsinplay = ((($buyincount * $game['BeginningStack']) + $bonuschips) + ($bumpcount * $game['BumpStack']));
+			$avgstack = ($chipsinplay / $activeplayercount)
 		?>
 			<div class="total-pot"><label>Total Pot</label><span>$<?=number_format($totalpot, 2)?></span></div>
-			<div class="chips-in-play"><label>Chips in play</label><span>$<?=number_format($chipsinplay, 0)?></span></div>
+			<div class="chips-in-play"><label>Avg Stack</label><span>$<?=number_format($avgstack, 0)?></span></div>
 	</div>
 <?php } ?>
