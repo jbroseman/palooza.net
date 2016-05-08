@@ -43,6 +43,7 @@ class Repository
 	{
 		$sql = '
 	    	SELECT 	g.GameID,
+					(SELECT Filename FROM themes WHERE ThemeID = g.ThemeID) AS Theme,
 	    			g.Date,
 	    			g.EndOfRebuy,
 	    			g.BlindIncrementID,
@@ -50,7 +51,7 @@ class Repository
 					g.BumpCost,
 					g.BumpStack,
 	    			g.BuyInID,
-					(SELECT COUNT(GamePlayerID) FROM GamePlayers WHERE GameID = g.GameID) AS PlayerCount,
+					(SELECT COUNT(GamePlayerID) FROM gamePlayers WHERE GameID = g.GameID) AS PlayerCount,
 					bi.Amount AS BuyInAmount
 	    	FROM 	games AS g
 			JOIN	buyins AS bi ON bi.BuyInID = g.BuyInID
@@ -60,6 +61,19 @@ class Repository
 
 		$statement = $this->database->query($sql);
 		return $statement->fetch(PDO::FETCH_ASSOC);
+	}
+
+	public function GetThemes()
+	{
+		$sql = '
+	    	SELECT 	Name,
+	    			Filename,
+	    			ThemeID
+	    	FROM 	themes
+		';
+
+		$statement = $this->database->query($sql);
+		return $statement->fetchAll(PDO::FETCH_ASSOC);
 	}
 
 	public function GetChips()
@@ -213,6 +227,26 @@ class Repository
 		$success = $statement->rowCount() === 1;
 
 		return array('success' => $success);
+	}
+
+	function UpdateTheme($data)
+	{
+			$sql = '
+				UPDATE games 
+				SET ThemeID = :themeid
+				WHERE GameID = :gameid
+			';
+			
+			$statement = $this->database->prepare($sql);
+			$statement->bindValue(':gameid', $data['GameID']);
+			$statement->bindValue(':themeid', $data['ThemeID']);
+
+			$result = array(
+				"success" => $statement->execute(),
+				"message" => $statement->errorCode()
+			);
+
+			json_encode($result);
 	}
 	
 	function UpsertGamePlayer($player)

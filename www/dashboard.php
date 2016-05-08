@@ -4,6 +4,7 @@ require_once('../src/Repository.php');
 
 $repo = new Repository();
 $game = $repo->GetActiveGame();
+$themes = $repo->GetThemes();
 $timer = $repo->GetCurrentTime($game);
 $blinds = $repo->GetBlinds($game['GameID']);
 $chips = $repo->GetChips();
@@ -17,7 +18,6 @@ foreach ($players as $player) {
 $buyincount = 0;
 $bumpcount = 0;
 $completedblinds = 0;
-$theme = "honeycomb";
 
 ?>
 
@@ -25,7 +25,7 @@ $theme = "honeycomb";
     <head>
         <title>HomeGame - Dashboard</title>
         <link rel="stylesheet" href="styles/font.css" type="text/css" />
-        <link rel="stylesheet" href="styles/<?=$theme?>.css" type="text/css" />
+        <link rel="stylesheet" href="styles/<?=$game['Theme']?>.css" type="text/css" />
 		<script type="text/javascript" src="scripts/jquery-2.1.3.js"></script>
 		<script type="text/javascript" src="scripts/jquery-ui.min.js"></script>
 		<script type="text/javascript" src="scripts/timer.js"></script>

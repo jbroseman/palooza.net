@@ -11,7 +11,7 @@
 body {
     background: radial-gradient(rgba(38, 157, 255, .4), rgba(0, 0, 0, .7));
     color: #fff;
-    font-size: .6em;
+    font-size: 100%;
     font-family: "Segoe UI", Verdana, Helvetica, Sans-Serif;
     margin: 0;
     padding: 0;
@@ -500,10 +500,18 @@ form {
 }
 
 .popup.main-menu .button {
+    background-size: 200%;
+}
+
+.popup.main-menu .button,
+.popup.main-menu select{
     width: 70%;
     display: inline-block;
     margin: .5em auto;
-    background-size: 200%;
+}
+
+.popup.main-menu select{
+    font-size: 1.5em;
 }
 
 .popup.add-players ul {

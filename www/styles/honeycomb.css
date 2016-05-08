@@ -9,7 +9,7 @@
 }
 
 body {
-    background: radial-gradient(rgba(0, 0, 0, .5), #000000);
+    background: radial-gradient(rgba(0, 0, 0, .7), #000000);
     color: #fff;
     font-size: 100%;
     font-family: "Segoe UI", Verdana, Helvetica, Sans-Serif;
@@ -494,10 +494,15 @@ form {
     left: 35%;
 }
 
-.popup.main-menu .button {
+.popup.main-menu .button,
+.popup.main-menu select{
     width: 70%;
     display: inline-block;
     margin: .5em auto;
+}
+
+.popup.main-menu select{
+    font-size: 1.5em;
 }
 
 .popup.add-players ul {

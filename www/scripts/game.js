@@ -55,6 +55,10 @@
         upsertPayouts();
     });
     
+    $('#Theme_Picker').on('change', function () {
+       updateTheme(); 
+    });
+    
     function closeGame() {
         $.ajax({
             url: "api/closegame.php",
@@ -137,6 +141,35 @@
                     $('.popup-new-game').addClass('hidden');
                     location.reload();
                 }
+            }
+        })
+        .error(function (e) {
+            alert(e.responseText);
+        });
+    }
+
+    function updateTheme() {
+        var data = {
+            'GameID': $('.game').data('id'),
+            'ThemeID': $('#Theme_Picker').val()
+        };
+
+        $.ajax({
+            url: "api/updatetheme.php",
+            type: "post",
+            contentType: 'application/json',
+            data: JSON.stringify(data),
+        }).done(function (data) {
+            if (data)
+            {
+                if (data.message) {
+                    $('#result_message').html(data.message);
+                }
+            }
+            else {
+                $('#modal_overlay').addClass('hidden');
+                $('.popup-main-menu').addClass('hidden');
+                location.reload();
             }
         })
         .error(function (e) {

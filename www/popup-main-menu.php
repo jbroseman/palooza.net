@@ -10,5 +10,13 @@
 		<?php if (!empty($game['GameID']) && $game['GameID'] > 0) { ?>
 			<div class="button menu-collapse">Back to Game</div>
 		<?php } ?>
+		<select id="Theme_Picker">
+			<?php foreach ($themes as $theme) { 
+				if ($game['Theme'] == $theme['Filename']) {?>
+					<option selected="selected" value="<?=$theme['ThemeID']?>" data-file="<?=$theme['Filename']?>"><?=$theme['Name']?></option>
+				<?php } else { ?>
+					<option value="<?=$theme['ThemeID']?>" data-file="<?=$theme['Filename']?>"><?=$theme['Name']?></option>
+			<?php }} ?>
+		</select>
 	</div>
 </div>
