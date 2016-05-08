@@ -196,13 +196,10 @@ ul, li {
 .players #Add_Players,
 #Configure_Payouts {
     padding: 0;
-    width: 1.5em;
-    height: 1.5em;
-    font-size: .7em;
-    line-height: 1.4em;
     display: inline-block;
     vertical-align: middle;
     margin: 0 0 .5em .5em;
+    padding: 2px 12px 2px 12px;
 }
 
 #Configure_Payouts {
@@ -264,9 +261,11 @@ ul, li {
 }
 
 .player-menu .button {
-    font-size: 1em;
+    font-size: 1.25em;
     display: block;
     margin: .5em 1em;
+    padding: 3px;
+    background-size: 250%;
 }
 
 .timer {
@@ -418,12 +417,23 @@ ul, li {
     margin-top: -5px;
 }
 
-.blinds li .chip-up img {
+.blinds li img.chip-up {
     display: inline-block;
     vertical-align: middle;
-    height: 20px;
-    width: 20px;
-    margin: 0 10px;
+    height: 25px;
+    width: 25px;
+    margin: 0 2px;
+}
+
+.blinds li .chip-up-overlay {
+    display: inline-block;
+    vertical-align: middle;
+    height: 35px;
+    width: 35px;
+    margin: -1px 0 0 -40px;
+    background-image: url('../img/chip_up_overlay.png');
+    background-size: 100%;
+    background-repeat: no-repeat;
 }
 
 /* Forms

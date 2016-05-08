@@ -17,7 +17,7 @@ foreach ($players as $player) {
 $buyincount = 0;
 $bumpcount = 0;
 $completedblinds = 0;
-$theme = "suited";
+$theme = "honeycomb";
 
 ?>
 

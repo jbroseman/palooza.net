@@ -9,6 +9,7 @@
 					<?php } ?>
 					<?php if (!empty($blind['ChipUpID']) && $blind['Completed'] == false) { ?>
 						<img class="chip-up chip-up-<?=$blind['ChipUpID']?>" src="img/<?=$blind['ChipUpIMG']?>" />
+						<div class="chip-up-overlay"></div>
 					<?php } ?>
 					<span><?=$blind['SmallBlind']?>/<?=$blind['LargeBlind']?></span>
 					<div class="status"></div>
