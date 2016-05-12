@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
-namespace palooza.net.Models
+namespace palooza.net.Models.ViewModels
 {
     public class ExternalLoginConfirmationViewModel
     {

@@ -1,0 +1,64 @@
+﻿@using palooza.net.Models
+@model DashboardVM
+
+@{
+	Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+	<meta name="viewport" content="width=device-width" />
+	<title>PokerPalooza</title>
+	@{Response.AddHeader("Refresh", "timeinseconds");}
+</head>
+<body>
+	<div class="bg-1"></div>
+	<div class="bg-2"></div>
+	<div class="bg-3"></div>
+	<div class="brand">
+
+	</div>
+	<div class="clock" id="Live_Time">
+
+	</div>
+
+	@{Html.RenderPartial("_PlayersPartial", Model.Players);}
+	@{Html.RenderPartial("_GamePartial", Model.Game);}
+	@{Html.RenderPartial("_BlindsPartial", Model.Blinds);}
+	@{Html.RenderPartial("_ChipsPartial", Model.Chips);}
+	@{Html.RenderPartial("_TimerPartial", Model.Timer);}
+
+	<div class="copy">
+
+	</div>
+</body>
+</html>
+<script type="text/javascript">
+	$(document).on(load, dTime());
+	function dTime()
+	{
+		var d = new Date();
+		var h = d.getHours();
+		var m = d.getMinutes();
+		var s = d.getSeconds();
+
+		//add a zero in front of numbers < 10
+		m = checkTime(m);
+		s = checkTime(s);
+
+		document.getElementById('Live_Time').innerHTML = "Time: " + h + ":" + m + ":" + s;
+
+		var t = setTimeout('dTime()', 500);
+	}
+
+	function checkTime(i)
+	{
+		if (i < 10) {
+			i = "0" + i;
+		}
+
+		return i;
+	}
+</script>
