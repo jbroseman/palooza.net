@@ -46,9 +46,22 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Repo\ChipRepo.cs" />
+    <Compile Include="Repo\IPaloozaRepository.cs" />
+    <Compile Include="Repo\PaloozaDB.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\palooza.domain\palooza.domain.csproj">
+      <Project>{cb23f611-0ccf-450a-983d-1bbb4a6dda43}</Project>
+      <Name>palooza.domain</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="DB\Tables\BoostType.sql" />
+    <Content Include="DB\Tables\Chip.sql" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
