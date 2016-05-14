@@ -7,12 +7,13 @@ using System.Threading.Tasks;
 using palooza.domain.Models;
 using System.Data.SqlClient;
 
+using Dapper;
+using DapperExtensions;
+
 namespace palooza.data.Repo
 {
     public class ChipRepo : IPaloozaRepository<Chip>
     {
-                
-
         public void Delete(Chip chip)
         {
             throw new NotImplementedException();
@@ -25,7 +26,7 @@ namespace palooza.data.Repo
 
         public IEnumerable<Chip> List()
         {
-            throw new NotImplementedException();
+            return PaloozaDB.Connection.Query<Chip>("SELECT * FROM Chip");
         }
 
         public void Save(Chip obj)
