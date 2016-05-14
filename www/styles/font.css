@@ -1,0 +1,22 @@
+@font-face {
+	font-family: 'DSDIGI';
+	src: url('./fonts/DSDIGI.eot');
+	src: local('DSDIGI'), url('./fonts/DSDIGI.woff') format('woff'), url('./fonts/DSDIGI.ttf') format('truetype');
+}
+/* use this class to attach this font to any element i.e. <p class="fontsforweb_fontid_1091">Text with this font applied</p> */
+.fontsforweb_fontid_1091 {
+	font-family: 'DSDIGI' !important;
+}
+
+@font-face {
+	font-family: 'EternalFascination1';
+	src: url('./fonts/EternalFascination1.eot');
+	src: local('EternalFascination1'), url('./fonts/EternalFascination1.woff') format('woff'), url('./fonts/EternalFascination1.ttf') format('truetype');
+}
+/* use this class to attach this font to any element i.e. <p class="fontsforweb_fontid_48213">Text with this font applied</p> */
+.fontsforweb_fontid_48213 {
+	font-family: 'EternalFascination1' !important;
+}
+
+
+/* Font downloaded from FontsForWeb.com */
