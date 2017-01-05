@@ -6,8 +6,9 @@ namespace palooza.data.Repo
     public interface IPaloozaRepository <T> 
     {
         IEnumerable<T> List();
-        T Find(int id);
         void Save(T obj);
+        void Save(IEnumerable<T> obj);
         void Delete(T obj);
+        void Delete(IEnumerable<T> obj);
     }
 }

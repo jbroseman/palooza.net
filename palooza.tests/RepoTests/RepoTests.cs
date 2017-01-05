@@ -1,10 +1,12 @@
 ﻿using NUnit.Framework;
 using palooza.data.Repo;
+using palooza.domain.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace palooza.tests.RepoTests
 {
@@ -20,7 +22,22 @@ namespace palooza.tests.RepoTests
         [Test]
         public void Chips()
         {
-            Assert.Greater(PaloozaDB.Chips.List().ToList().Count(), 0);
+            Chip myTestChip = new Chip()
+            {
+                Color = "poop brown",
+                Value = 6969
+            };
+
+            PaloozaDB.Chips.Delete(PaloozaDB.Chips.List().Where(x => x.Equals(myTestChip)));
+
+            PaloozaDB.Chips.Save(myTestChip);
+            Assert.AreEqual(PaloozaDB.Chips.List().Where(x => x.Equals(myTestChip)).Count(), 1);
+
+            PaloozaDB.Chips.Delete(PaloozaDB.Chips.List().Where(x => x.Equals(myTestChip)));
+            Assert.AreEqual(
+                PaloozaDB.Chips.List().Where(
+                    x => x.Color.Equals(myTestChip.Color) 
+                        && x.Value == myTestChip.Value).Count(), 0);
         }
     }
 }

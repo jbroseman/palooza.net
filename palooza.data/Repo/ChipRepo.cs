@@ -14,14 +14,21 @@ namespace palooza.data.Repo
 {
     public class ChipRepo : IPaloozaRepository<Chip>
     {
-        public void Delete(Chip chip)
+        public void Delete(IEnumerable<Chip> obj)
         {
-            throw new NotImplementedException();
+            if (obj.Count() > 0)
+                foreach (Chip o in obj)
+                    PaloozaDB.Connection.Execute(
+                        @"DELETE Chip WHERE Color = @Color AND Value = @Value", new
+                        {
+                            Color = o.Color,
+                            Value = o.Value
+                        });
         }
 
-        public Chip Find(int id)
+        public void Delete(Chip obj)
         {
-            throw new NotImplementedException();
+            PaloozaDB.Connection.Delete<Chip>(obj);
         }
 
         public IEnumerable<Chip> List()
@@ -29,14 +36,17 @@ namespace palooza.data.Repo
             return PaloozaDB.Connection.Query<Chip>("SELECT * FROM Chip");
         }
 
+        public void Save(IEnumerable<Chip> obj)
+        {
+            throw new NotImplementedException();
+        }
+
         public void Save(Chip obj)
         {
-            string qry = string.Format(
-                @"UPDATE Chip SET Value = {0}, ...",
-                obj.Value);
-
-
-            throw new NotImplementedException();
+            if (List().Contains(obj))
+                PaloozaDB.Connection.Update<Chip>(obj);
+            else
+                PaloozaDB.Connection.Insert<Chip>(obj);
         }
     }
 }
