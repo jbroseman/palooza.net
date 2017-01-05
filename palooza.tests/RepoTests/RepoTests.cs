@@ -20,6 +20,24 @@ namespace palooza.tests.RepoTests
         }
 
         [Test]
+        public void Blinds()
+        {
+            Blind testBlind = new Blind()
+            {
+                Big = 420,
+                Small = 69
+            };
+
+            PaloozaDB.Blinds.Delete(PaloozaDB.Blinds.List().Where(x => x.Equals(testBlind)));
+
+            PaloozaDB.Blinds.Save(testBlind);
+            Assert.AreEqual(PaloozaDB.Blinds.List().Where(x => x.Equals(testBlind)).Count(), 1);
+
+            PaloozaDB.Blinds.Delete(PaloozaDB.Blinds.List().Where(x => x.Equals(testBlind)));
+            Assert.AreEqual(PaloozaDB.Blinds.List().Where(x => x.Equals(testBlind)).Count(), 0);
+        }
+
+        [Test]
         public void Chips()
         {
             Chip myTestChip = new Chip()
@@ -34,10 +52,7 @@ namespace palooza.tests.RepoTests
             Assert.AreEqual(PaloozaDB.Chips.List().Where(x => x.Equals(myTestChip)).Count(), 1);
 
             PaloozaDB.Chips.Delete(PaloozaDB.Chips.List().Where(x => x.Equals(myTestChip)));
-            Assert.AreEqual(
-                PaloozaDB.Chips.List().Where(
-                    x => x.Color.Equals(myTestChip.Color) 
-                        && x.Value == myTestChip.Value).Count(), 0);
+            Assert.AreEqual(PaloozaDB.Chips.List().Where(x => x.Equals(myTestChip)).Count(), 0);
         }
     }
 }

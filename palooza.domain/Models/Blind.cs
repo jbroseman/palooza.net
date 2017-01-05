@@ -4,8 +4,8 @@ namespace palooza.domain.Models
 {
     public class Blind
     {
-        public int Big;
-        public int Small;
+        public int Big { get; set; }
+        public int Small { get; set; }
 
         public bool Equals(Blind blind)
         {

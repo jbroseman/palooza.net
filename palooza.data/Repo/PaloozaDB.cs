@@ -10,11 +10,13 @@ namespace palooza.data.Repo
     public class PaloozaDB
     {
         public static SqlConnection Connection { get; set; }
+        public static BlindRepo Blinds { get; set; }
         public static ChipRepo Chips { get; set; }
 
         public PaloozaDB(string connectionString)
         {
             Connection = new SqlConnection(connectionString);
+            Blinds = new BlindRepo();
             Chips = new ChipRepo();
         }
     }
