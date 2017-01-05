@@ -4,7 +4,12 @@ namespace palooza.domain.Models
 {
     public class Blind
     {
-        public IEnumerable<Chip> Small;
-        public IEnumerable<Chip> Big;
+        public int Big;
+        public int Small;
+
+        public bool Equals(Blind blind)
+        {
+            return blind.Big == Big && blind.Small == Small;
+        }
     }
 }
