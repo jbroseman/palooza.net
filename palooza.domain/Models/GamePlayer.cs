@@ -10,5 +10,12 @@ namespace palooza.domain.Models
         public IEnumerable<Buyin> Buyins { get; set; }
         public IEnumerable<Boost> Boosts { get; set; }
         public Payout Payout { get; set; }
+
+        public bool Equals(GamePlayer gp)
+        {
+            return gp.BuyinTime.Equals(BuyinTime)
+                && gp.EliminationTime.Equals(EliminationTime)
+                && gp.Payout == Payout;
+        }
     }
 }

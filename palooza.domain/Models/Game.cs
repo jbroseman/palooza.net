@@ -11,5 +11,11 @@ namespace palooza.domain.Models
         // how do we fit in chipstacks, do we even need to 
         public IEnumerable<GameTable> Tables { get; set; }
         public IEnumerable<GameBlind> Blinds { get; set; }
+
+        public bool Equals(Game g)
+        {
+            return g.StartTime.Equals(StartTime)
+                && g.EndTime.Equals(EndTime);
+        }
     }
 }

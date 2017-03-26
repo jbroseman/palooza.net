@@ -20,6 +20,7 @@
     <IISExpressAnonymousAuthentication />
     <IISExpressWindowsAuthentication />
     <IISExpressUseClassicPipelineMode />
+    <UseGlobalApplicationHostFile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -239,6 +240,16 @@
     <Content Include="fonts\glyphicons-halflings-regular.eot" />
     <Content Include="packages.config" />
     <None Include="Project_Readme.html" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\palooza.data\palooza.data.csproj">
+      <Project>{a170e88a-f9d7-4b62-8ac7-aff1fcdd90d9}</Project>
+      <Name>palooza.data</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\palooza.domain\palooza.domain.csproj">
+      <Project>{cb23f611-0ccf-450a-983d-1bbb4a6dda43}</Project>
+      <Name>palooza.domain</Name>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
