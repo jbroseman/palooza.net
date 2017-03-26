@@ -10,3 +10,5 @@
 **/bower_components
 .vs/
 sh.exe.stackdump
+
+UpgradeLog\.htm

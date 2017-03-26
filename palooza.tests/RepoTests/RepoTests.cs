@@ -42,7 +42,7 @@ namespace palooza.tests.RepoTests
         {
             Chip myTestChip = new Chip()
             {
-                Color = "poop brown",
+                Color = "period red",
                 Value = 6969
             };
 
